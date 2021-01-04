@@ -6,7 +6,8 @@ import App from './App'
 import sys from '@/plugin/sys'
 // store
 import store from '@/store'
-
+// axios请求
+import httpRequest from '@/libs/util.request'
 // 菜单和路由设置
 import router from './router'
 import { menuHeader, menuAside } from '@/menu'
@@ -14,6 +15,8 @@ import { frameInRoutes } from '@/router/routes'
 
 // 核心插件
 Vue.use(sys)
+// axios请求方法
+Vue.prototype.$http = httpRequest
 
 new Vue({
   router,
@@ -22,7 +25,6 @@ new Vue({
   render: h => h(App),
   created () {
     // 处理路由 得到每一级的路由设置
-    console.log(this.$store)
     this.$store.commit('sys/page/init', frameInRoutes)
     // 设置顶栏菜单
     this.$store.commit('sys/menu/headerSet', menuHeader)

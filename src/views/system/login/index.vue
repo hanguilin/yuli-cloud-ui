@@ -15,9 +15,7 @@
         class="page-login--content"
         flex="dir:top main:justify cross:stretch box:justify">
         <div class="page-login--content-header">
-          <p class="page-login--content-header-motto">
-            时间是一切财富中最宝贵的财富
-          </p>
+          <p class="page-login--content-header-motto"></p>
         </div>
         <div
           class="page-login--content-main"
@@ -154,8 +152,8 @@ export default {
       ],
       // 表单
       formLogin: {
-        username: 'admin',
-        password: 'admin',
+        username: 'han',
+        password: '123456',
         code: 'v9am'
       },
       // 表单校验
@@ -221,11 +219,10 @@ export default {
           this.login({
             username: this.formLogin.username,
             password: this.formLogin.password
+          }).then((success) => {
+            // 重定向对象不存在则返回顶层路径
+            this.$router.replace(this.$route.query.redirect || '/')
           })
-            .then(() => {
-              // 重定向对象不存在则返回顶层路径
-              this.$router.replace(this.$route.query.redirect || '/')
-            })
         } else {
           // 登录表单校验失败
           this.$message.error('表单校验失败，请检查')

@@ -33,12 +33,12 @@ const router = new VueRouter({
  * 权限验证
  */
 router.beforeEach(async (to, from, next) => {
+  // 进度条
+  NProgress.start()
   // 确认已经加载多标签页数据 https://github.com/d2-projects/d2-admin/issues/201
   await store.dispatch('sys/page/isLoaded')
   // 确认已经加载组件尺寸设置 https://github.com/d2-projects/d2-admin/issues/198
   await store.dispatch('sys/size/isLoaded')
-  // 进度条
-  NProgress.start()
   // 关闭搜索面板
   store.commit('sys/search/set', false)
   // 验证当前路由所有的匹配中是否需要有登录验证的

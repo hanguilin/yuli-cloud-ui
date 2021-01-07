@@ -1,6 +1,5 @@
 module.exports = [
   { name: 'vue', library: 'Vue', js: 'https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js', css: '' },
-  { name: 'vue-i18n', library: 'VueI18n', js: 'https://cdn.jsdelivr.net/npm/vue-i18n@8.15.1/dist/vue-i18n.min.js', css: '' },
   { name: 'vue-router', library: 'VueRouter', js: 'https://cdn.jsdelivr.net/npm/vue-router@3.1.3/dist/vue-router.min.js', css: '' },
   { name: 'vuex', library: 'Vuex', js: 'https://cdn.jsdelivr.net/npm/vuex@3.1.2/dist/vuex.min.js', css: '' },
   { name: 'axios', library: 'axios', js: 'https://cdn.jsdelivr.net/npm/axios@0.19.0/dist/axios.min.js', css: '' },

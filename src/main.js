@@ -1,6 +1,5 @@
 // Vue
 import Vue from 'vue'
-import i18n from './i18n'
 import App from './App'
 // 核心插件
 import sys from '@/plugin/sys'
@@ -10,28 +9,22 @@ import store from '@/store'
 import httpRequest from '@/libs/util.request'
 // 菜单和路由设置
 import router from './router'
-import { menuHeader, menuAside } from '@/menu'
-import { frameInRoutes } from '@/router/routes'
+import cloneDeep from 'lodash/cloneDeep'
 
 // 核心插件
 Vue.use(sys)
 // axios请求方法
 Vue.prototype.$http = httpRequest
 
+// 保存整站vuex本地储存初始状态
+window.SITE_CONFIG = {}
+window.SITE_CONFIG.storeState = cloneDeep(store.state)
+
 new Vue({
   router,
   store,
-  i18n,
   render: h => h(App),
   created () {
-    // 处理路由 得到每一级的路由设置
-    this.$store.commit('sys/page/init', frameInRoutes)
-    // 设置顶栏菜单
-    this.$store.commit('sys/menu/headerSet', menuHeader)
-    // 设置侧边栏菜单
-    this.$store.commit('sys/menu/asideSet', menuAside)
-    // 初始化菜单搜索功能
-    this.$store.commit('sys/search/init', menuHeader)
   },
   mounted () {
     // 展示系统信息

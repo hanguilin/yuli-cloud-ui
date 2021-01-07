@@ -18,14 +18,15 @@ export default {
       password = ''
     } = {}) {
       await sysLogin({ username, password }).then((res) => {
-        if (res.data) {
+        if (res.status === 200 && res.data) {
           const data = res.data
           util.cookies.set('userId', data.user_id)
           util.cookies.set('token', data.access_token)
           util.cookies.set('refreshToken', data.refresh_token)
           // 设置 vuex 用户信息
           dispatch('sys/user/set', { name: data.nickname }, { root: true })
-
+          // 获取菜单
+          // getMenu()
           dispatch('load')
         }
       })
@@ -41,13 +42,9 @@ export default {
        * @description 注销
        */
       async function logout () {
-        // 删除cookie
-        util.cookies.remove('token')
-        util.cookies.remove('userId')
-        // 清空 vuex 用户信息
-        await dispatch('sys/user/set', {}, { root: true })
         // 跳转路由
         router.push({ name: 'login' })
+        util.clearLoginInfo()
       }
       // 判断是否需要确认
       if (confirm) {
@@ -76,8 +73,6 @@ export default {
       await dispatch('sys/theme/load', null, { root: true })
       // 加载页面过渡效果设置
       await dispatch('sys/transition/load', null, { root: true })
-      // 持久化数据加载上次退出时的多页列表
-      await dispatch('sys/page/openedLoad', null, { root: true })
       // 持久化数据加载侧边栏配置
       await dispatch('sys/menu/asideLoad', null, { root: true })
       // 持久化数据加载全局尺寸

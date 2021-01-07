@@ -8,7 +8,7 @@
         class="d2-ml-0 d2-mr btn-text can-hover"
         type="text"
         @click="dialogVisible = true">
-        <d2-icon
+        <fa-icon
           name="diamond"
           style="font-size: 16px"/>
       </el-button>
@@ -18,16 +18,16 @@
       width="600px"
       :visible.sync="dialogVisible"
       :append-to-body="true">
-      <d2-theme-list style="margin-top: -25px;"/>
+      <yuli-list style="margin-top: -25px;"/>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import themeList from './components/d2-theme-list'
+import themeList from './components/yuli-theme-list'
 export default {
   components: {
-    'd2-theme-list': themeList
+    'yuli-list': themeList
   },
   data () {
     return {

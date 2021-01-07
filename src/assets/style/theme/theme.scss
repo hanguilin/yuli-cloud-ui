@@ -19,9 +19,9 @@
   }
 
   // 背景图片和遮罩
-  .d2-layout-header-aside-group {
+  .yuli-layout-header-aside-group {
     background-color: $theme-bg-color;
-    .d2-layout-header-aside-mask {
+    .yuli-layout-header-aside-mask {
       background: $theme-bg-mask;
     }
   }
@@ -70,10 +70,10 @@
   }
   
   // 顶栏
-  .d2-theme-header {
+  .yuli-header {
     // 顶栏菜单空间不足时显示的滚动控件
-    .d2-theme-header-menu {
-      .d2-theme-header-menu__prev, .d2-theme-header-menu__next {
+    .yuli-header-menu {
+      .yuli-header-menu__prev, .yuli-header-menu__next {
         color: $theme-header-item-color;
         background: $theme-header-item-background-color;
         &:hover {
@@ -164,11 +164,14 @@
     }
   }
   // [布局] 顶栏下面
-  .d2-theme-container {
+  .yuli-container {
     // 侧边栏
-    .d2-theme-container-aside {
+    .yuli-container-aside {
+      -webkit-box-shadow: 0 2px 4px rgba(0,0,0,.08);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.20);
+      z-index: 1;
       // 菜单为空的时候显示的信息
-      .d2-layout-header-aside-menu-empty {
+      .yuli-layout-header-aside-menu-empty {
         background: $theme-aside-menu-empty-background-color;
         i {
           color: $theme-aside-menu-empty-icon-color;
@@ -243,21 +246,25 @@
         }
       }
     }
-    .d2-theme-container-main {
+    .yuli-container-main {
       // 主体部分分为多页面控制器 和主体
-      .d2-theme-container-main-header {
+      .yuli-container-main-header {
+        -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+        background-color: #fff;
         // 多页面控制器
-        .d2-multiple-page-control {
+        .yuli-multiple-page-control {
           .el-tabs__header.is-top {
             border-bottom-color: $theme-multiple-page-control-border-color;
           }
           .el-tabs__nav {
+            border: none;
             border-color: $theme-multiple-page-control-border-color;
             .el-tabs__item {
               @extend %unable-select;
               color: $theme-multiple-page-control-color;
-              background-color: $theme-multiple-page-control-background-color;
               border-left-color: $theme-multiple-page-control-border-color;
+              border: none;
               &:first-child {
                 border-left: none;
                 &:hover {
@@ -267,8 +274,8 @@
             }
             .el-tabs__item.is-active {
               color: $theme-multiple-page-control-color-active;
-              background-color: $theme-multiple-page-control-background-color-active;
-              border-bottom-color: $theme-multiple-page-control-border-color-active;
+              border-bottom: 3px solid #409eff;
+              // border-bottom-color: $theme-multiple-page-control-border-color-active;
             }
           }
           %el-tabs__nav {
@@ -284,7 +291,9 @@
           }
         }
         // 多页控制器的关闭控制
-        .d2-multiple-page-control-btn {
+        .yuli-multiple-page-control-btn {
+          display: flex;
+          align-items: center;
           .el-dropdown {
             .el-button-group {
               .el-button {
@@ -295,7 +304,10 @@
         }
       }
       // 主体
-      .d2-theme-container-main-body {
+      .yuli-container-main-body {
+        margin: 10px 0 0 10px;
+        padding: 10px;
+        background-color: #fff;
         // 布局组件
         .container-component {
           // [组件]

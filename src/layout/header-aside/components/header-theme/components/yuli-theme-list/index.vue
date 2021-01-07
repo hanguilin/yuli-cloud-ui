@@ -16,7 +16,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 export default {
-  name: 'd2-theme-list',
+  name: 'yuli-theme-list',
   data () {
     return {
       table: {

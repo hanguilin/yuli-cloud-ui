@@ -1,8 +1,5 @@
 <template>
-  <d2-container>
-    <template slot="header">Page 3 header</template>
-    Hello World
-  </d2-container>
+  <h1>Page 3</h1>
 </template>
 
 <script>

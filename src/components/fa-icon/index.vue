@@ -5,7 +5,7 @@
 <script>
 import './font-awesome-4.7.0/css/font-awesome.min.css'
 export default {
-  name: 'd2-icon',
+  name: 'fa-icon',
   props: {
     name: {
       type: String,

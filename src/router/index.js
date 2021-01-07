@@ -1,15 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import cloneDeep from 'lodash/cloneDeep'
 // 进度条
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-
-import store from '@/store/index'
+import { getMenu } from '@/api/modules/sys/index'
+import store from '@/store'
 import util from '@/libs/util.js'
-
 // 路由数据
-import routes from './routes'
+import { frameInRoutes, frameOutRoutes } from './routes'
+
+// 开发环境不使用懒加载
+const _import = require('./import-' + process.env.NODE_ENV)
 
 // fix vue-router NavigationDuplicated
 const VueRouterPush = VueRouter.prototype.push
@@ -25,7 +27,11 @@ Vue.use(VueRouter)
 
 // 导出路由 在 main.js 里使用
 const router = new VueRouter({
-  routes
+  isAddDynamicMenuRoutes: false, // 是否已经添加动态(菜单)路由
+  routes: [
+    frameInRoutes,
+    ...frameOutRoutes
+  ]
 })
 
 /**
@@ -35,34 +41,38 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   // 进度条
   NProgress.start()
-  // 确认已经加载多标签页数据 https://github.com/d2-projects/d2-admin/issues/201
-  await store.dispatch('sys/page/isLoaded')
-  // 确认已经加载组件尺寸设置 https://github.com/d2-projects/d2-admin/issues/198
-  await store.dispatch('sys/size/isLoaded')
   // 关闭搜索面板
   store.commit('sys/search/set', false)
-  // 验证当前路由所有的匹配中是否需要有登录验证的
-  if (to.matched.some(r => r.meta.auth)) {
-    // 这里暂时将cookie里是否存有token作为验证是否登录的条件
-    // 请根据自身业务需要修改
-    const token = util.cookies.get('token')
-    if (token && token !== 'undefined') {
-      next()
-    } else {
-      // 没有登录的时候跳转到登录界面
-      // 携带上登陆成功之后需要跳转的页面完整路径
-      next({
-        name: 'login',
-        query: {
-          redirect: to.fullPath
-        }
-      })
-      // https://github.com/d2-projects/d2-admin/issues/138
-      NProgress.done()
-    }
-  } else {
-    // 不需要身份校验 直接通过
+  console.log(to.path, fnCurrentRouteType(to, frameOutRoutes))
+  // 框架外部路由或由接口提供的动态路由则直接放行，不查询菜单
+  if (fnCurrentRouteType(to, frameOutRoutes) === 'frameOut' || router.options.isAddDynamicMenuRoutes) {
     next()
+  } else {
+    // 框架内路由或非动态路由查询菜单
+    getMenu().then((res) => {
+      if (res.data.code === 200) {
+        router.options.isAddDynamicMenuRoutes = true
+        const menu = res.data.data
+        // 根据返回数据添加动态路由
+        fnAddDynamicMenuRoutes(menu)
+        // 格式化左侧菜单数据
+        const menuAside = util.formatMenu(menu)
+        /// 设置数据到vuex
+        store.commit('sys/menu/asideSet', menuAside)
+        // 设置name和meta.title属性
+        const poolMenu = fnGenPoolMenu(menuAside)
+        // 设置框架内展示到页签的路由
+        store.commit('sys/page/init', poolMenu.concat(frameInRoutes))
+        // 设置可搜索的路由
+        store.commit('sys/search/init', menuAside)
+        // 持久化数据加载上次退出时的多页列表
+        store.dispatch('sys/page/openedLoad', null, { root: true })
+        // 保证动态路由有效性
+        next({ ...to, replace: true })
+      } else {
+        next()
+      }
+    })
   }
 })
 
@@ -74,5 +84,86 @@ router.afterEach(to => {
   // 更改标题
   util.title(to.meta.title)
 })
+
+/**
+ * 判断当前路由类型, frameIn: 框架内路由, frameOut: 框架外路由
+ * @param {*} route 当前路由
+ */
+function fnCurrentRouteType (route, frameOutRoutes = []) {
+  let temp = []
+  for (let i = 0; i < frameOutRoutes.length; i++) {
+    if (route.path === frameOutRoutes[i].path) {
+      return 'frameOut'
+    } else if (frameOutRoutes[i].children && frameOutRoutes[i].children.length >= 1) {
+      temp = temp.concat(frameOutRoutes[i].children)
+    }
+  }
+  return temp.length >= 1 ? fnCurrentRouteType(route, temp) : 'frameIn'
+}
+/**
+ * 添加动态路由
+ * @param {*} menuList 菜单数据
+ * @param {*} routes 递归路由数据
+ */
+function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
+  let temp = []
+  for (let i = 0; i < menuList.length; i++) {
+    if (menuList[i].children && menuList[i].children.length >= 1) {
+      temp = temp.concat(menuList[i].children)
+    }
+
+    if (menuList[i].path && /\S/.test(menuList[i].path)) {
+      menuList[i].path = menuList[i].path.replace(/[/]$/, '')
+      const route = {
+        path: menuList[i].path.split('?')[0],
+        component: null,
+        name: util.genRouteName(menuList[i].path),
+        meta: {
+          menuId: menuList[i].id,
+          title: menuList[i].title,
+          isDynamic: true
+        }
+      }
+      try {
+        // 去除前缀/
+        let componentName = `${menuList[i].path.split('?')[0]}`
+        componentName = componentName.startsWith('/') ? componentName.substr(1, componentName.length) : componentName
+        route.component = _import(componentName) || null
+      } catch (e) {
+        console.error(e)
+      }
+      routes.push(route)
+    }
+  }
+  if (temp.length >= 1) {
+    fnAddDynamicMenuRoutes(temp, routes)
+  } else {
+    const frameInRoutesCopy = cloneDeep(frameInRoutes)
+    frameInRoutesCopy.name = 'main-dynamic'
+    frameInRoutesCopy.children = routes
+    const addDynamicRoutes = [
+      frameInRoutesCopy,
+      { path: '*', redirect: { name: '404' } }
+    ]
+    router.addRoutes(addDynamicRoutes)
+  }
+}
+
+/**
+ * 生成格式化的菜单数据
+ * @param {*} menu 菜单
+ */
+function fnGenPoolMenu (menu) {
+  return menu.map(e => {
+    return {
+      ...e,
+      meta: {
+        title: e.title
+      },
+      fullPath: e.path,
+      name: util.genRouteName(e.path)
+    }
+  })
+}
 
 export default router

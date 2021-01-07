@@ -1,7 +1,7 @@
 <template>
-  <div class="d2-multiple-page-control-group" flex>
-    <div class="d2-multiple-page-control-content" flex-box="1">
-      <div class="d2-multiple-page-control-content-inner">
+  <div class="yuli-multiple-page-control-group" flex>
+    <div class="yuli-multiple-page-control-content" flex-box="1">
+      <div class="yuli-multiple-page-control-content-inner">
         <d2-contextmenu
           :visible.sync="contextmenuFlag"
           :x="contentmenuX"
@@ -11,9 +11,9 @@
             @rowClick="contextmenuClick"/>
         </d2-contextmenu>
         <el-tabs
-          class="d2-multiple-page-control d2-multiple-page-sort"
-          :value="current"
           type="card"
+          class="yuli-multiple-page-control yuli-multiple-page-sort"
+          :value="current"
           @tab-click="handleClick"
           @tab-remove="handleTabRemove"
           @contextmenu.native="handleContextmenu">
@@ -26,28 +26,26 @@
         </el-tabs>
       </div>
     </div>
-    <div class="d2-multiple-page-control-btn" flex-box="0">
-      <el-dropdown
-        size="default"
-        split-button
-        @click="closeAll"
-        @command="command => handleControlItemClick(command)">
-        <d2-icon name="times-circle"/>
+    <div class="yuli-multiple-page-control-btn" flex-box="0">
+      <el-dropdown @command="command => handleControlItemClick(command)">
+        <el-button type="primary" size="mini">
+          更多菜单<i class="el-icon-arrow-down el-icon--right"></i>
+        </el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="left">
-            <d2-icon name="arrow-left" class="d2-mr-10"/>
+            <fa-icon name="arrow-left" class="d2-mr-10"/>
             关闭左侧
           </el-dropdown-item>
           <el-dropdown-item command="right">
-            <d2-icon name="arrow-right" class="d2-mr-10"/>
+            <fa-icon name="arrow-right" class="d2-mr-10"/>
             关闭右侧
           </el-dropdown-item>
           <el-dropdown-item command="other">
-            <d2-icon name="times" class="d2-mr-10"/>
+            <fa-icon name="times" class="d2-mr-10"/>
             关闭其它
           </el-dropdown-item>
           <el-dropdown-item command="all">
-            <d2-icon name="times-circle" class="d2-mr-10"/>
+            <fa-icon name="times-circle" class="d2-mr-10"/>
             全部关闭
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -173,7 +171,7 @@ export default {
     }
   },
   mounted () {
-    const el = document.querySelectorAll('.d2-multiple-page-sort .el-tabs__nav')[0]
+    const el = document.querySelectorAll('.yuli-multiple-page-sort .el-tabs__nav')[0]
     Sortable.create(el, {
       onEnd: (evt) => {
         const { oldIndex, newIndex } = evt
@@ -183,3 +181,9 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+::v-deep .el-tabs--card>.el-tabs__header {
+  border-bottom: none;
+  overflow: hidden;
+}
+</style>

@@ -2,6 +2,7 @@ import axios from 'axios'
 import merge from 'lodash/merge'
 import store from '@/store'
 import util from '@/libs/util.js'
+import { refreshToken } from '@/api/modules/sys'
 import qs from 'qs'
 import {
   Message,
@@ -36,7 +37,7 @@ axios.interceptors.request.use(config => {
     })
   }
   // 请求头带上token
-  config.headers.token = util.cookies.get('token')
+  config.headers.Authorization = 'Bearer ' + util.cookies.get('token')
   // 请求地址处理
   config.url = BASE_URL + config.url
   const type = config.method
@@ -79,18 +80,20 @@ axios.interceptors.response.use(response => {
     loading.close()
   }
   if (error.response.status === 401) { // 超时自动刷新
-    axios({
-      url: '/sys/refreshToken',
-      method: 'get',
-      params: { refreshToken: util.cookies.get('refreshToken') }
-    }).then(({ data }) => {
-      if (data && data.success) {
-        util.cookies.set('token', data.token)
-        util.cookies.set('refreshToken', data.refreshToken)
-      } else {
-        store.dispatch('sys/account/logout')
-      }
-    })
+    const token = util.cookies.get('refreshToken')
+    if (token) {
+      refreshToken({ token: util.cookies.get('refreshToken') }).then(res => {
+        if (res.status === 200 && res.data) {
+          util.cookies.set('token', res.data.token)
+          util.cookies.set('refreshToken', res.data.refreshToken)
+        } else {
+          store.dispatch('sys/account/logout')
+        }
+      })
+    } else {
+      // 没有refreshToken
+      store.dispatch('sys/account/logout')
+    }
   } else if (
     error.response.status === 402 ||
     error.response.status === 403) { // 402 未登录或者refresh token过时， 403 账号在其他地方登录

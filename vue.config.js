@@ -153,7 +153,7 @@ module.exports = {
       .end()
     // 重新设置 alias
     config.resolve.alias
-      .set('@api', resolve('src/api'))
+      .set('@', resolve('src'))
     // 分析工具
     if (process.env.npm_config_report) {
       config
@@ -162,14 +162,5 @@ module.exports = {
     }
   },
   // 不输出 map 文件
-  productionSourceMap: false,
-  // i18n
-  pluginOptions: {
-    i18n: {
-      locale: 'zh-chs',
-      fallbackLocale: 'en',
-      localeDir: 'locales',
-      enableInSFC: true
-    }
-  }
+  productionSourceMap: false
 }

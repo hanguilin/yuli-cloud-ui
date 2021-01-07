@@ -44,9 +44,9 @@ export default {
         time: dayjs().format('YYYY-MM-DD HH:mm:ss'),
         meta: {
           // 当前用户信息
-          user: rootState.d2admin.user.info,
+          user: rootState.sys.user.info,
           // 当前用户的 uuid
-          uuid: util.cookies.get('uuid'),
+          userId: util.cookies.get('userId'),
           // 当前的 token
           token: util.cookies.get('token'),
           // 当前地址

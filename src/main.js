@@ -5,16 +5,12 @@ import App from './App'
 import sys from '@/plugin/sys'
 // store
 import store from '@/store'
-// axios请求
-import httpRequest from '@/libs/util.request'
 // 菜单和路由设置
 import router from './router'
 import cloneDeep from 'lodash/cloneDeep'
 
 // 核心插件
 Vue.use(sys)
-// axios请求方法
-Vue.prototype.$http = httpRequest
 
 // 保存整站vuex本地储存初始状态
 window.SITE_CONFIG = {}
@@ -24,8 +20,6 @@ new Vue({
   router,
   store,
   render: h => h(App),
-  created () {
-  },
   mounted () {
     // 展示系统信息
     this.$store.commit('sys/releases/versionShow')

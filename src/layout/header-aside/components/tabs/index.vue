@@ -33,19 +33,19 @@
         </el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="left">
-            <fa-icon name="arrow-left" class="d2-mr-10"/>
+            <i class="fa fa-arrow-left d2-mr-10" aria-hidden="true"></i>
             关闭左侧
           </el-dropdown-item>
           <el-dropdown-item command="right">
-            <fa-icon name="arrow-right" class="d2-mr-10"/>
+            <i class="fa fa-arrow-right d2-mr-10" aria-hidden="true"></i>
             关闭右侧
           </el-dropdown-item>
           <el-dropdown-item command="other">
-            <fa-icon name="times" class="d2-mr-10"/>
+            <i class="fa fa-times de-mr-10" aria-hidden="true"></i>
             关闭其它
           </el-dropdown-item>
           <el-dropdown-item command="all">
-            <fa-icon name="times-circle" class="d2-mr-10"/>
+            <i class="fa fa-times-circle d2-mr-10" aria-hidden="true"></i>
             全部关闭
           </el-dropdown-item>
         </el-dropdown-menu>

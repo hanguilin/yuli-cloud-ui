@@ -1,5 +1,6 @@
 import { Message, MessageBox } from 'element-ui'
-import util from '@/libs/util.js'
+import util from '@/libs/util'
+import cookies from '@/libs/util.cookies'
 import router from '@/router'
 import { sysLogin } from '@/api/modules/sys'
 
@@ -20,9 +21,9 @@ export default {
       await sysLogin({ username, password }).then((res) => {
         if (res.status === 200 && res.data) {
           const data = res.data
-          util.cookies.set('userId', data.user_id)
-          util.cookies.set('token', data.access_token)
-          util.cookies.set('refreshToken', data.refresh_token)
+          cookies.set('userId', data.user_id)
+          cookies.set('token', data.access_token)
+          cookies.set('refreshToken', data.refresh_token)
           // 设置 vuex 用户信息
           dispatch('sys/user/set', { name: data.nickname }, { root: true })
           // 获取菜单
@@ -75,8 +76,6 @@ export default {
       await dispatch('sys/transition/load', null, { root: true })
       // 持久化数据加载侧边栏配置
       await dispatch('sys/menu/asideLoad', null, { root: true })
-      // 持久化数据加载全局尺寸
-      await dispatch('sys/size/load', null, { root: true })
       // 持久化数据加载颜色设置
       await dispatch('sys/color/load', null, { root: true })
     }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button type="primary" @click="dialogVisible = true" plain round>
-      <fa-icon name="question-circle-o" class="d2-mr-5"/>
+      <i class="fa fa-question-circle-o d2-mr-5" aria-hidden="true"></i>
       需要帮助吗
     </el-button>
     <el-dialog
@@ -15,15 +15,15 @@
         </h2>
         <el-button-group>
           <el-button @click="$open('https://d2.pub/zh/doc/d2-admin')">
-            <fa-icon name="book" class="d2-mr-5"/>
+          <i class="fa fa-book d2-mr-5" aria-hidden="true"></i>
             文档
           </el-button>
           <el-button @click="$open('https://github.com/d2-projects/d2-admin/issues?q=is%3Aissue+is%3Aclosed')">
-            <fa-icon name="question" class="d2-mr-5"/>
+            <i class="fa fa-question d2-mr-5" aria-hidden="true"></i>
             历史提问
           </el-button>
           <el-button @click="$open('https://github.com/d2-projects/d2-admin/issues/new/choose')">
-            <fa-icon name="plus" class="d2-mr-5"/>
+            <i class="fa fa-plus d2-mr-5" aria-hidden="true"></i>
             提交问题
           </el-button>
         </el-button-group>

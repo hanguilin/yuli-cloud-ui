@@ -2,9 +2,9 @@
   <el-tooltip effect="dark" :content="tooltipContent" placement="bottom">
     <el-button class="d2-ml-0 d2-mr btn-text can-hover" type="text" @click="handleClick">
       <el-badge v-if="logLength > 0" :max="99" :value="logLengthError" :is-dot="logLengthError === 0">
-        <fa-icon :name="logLengthError === 0 ? 'dot-circle-o' : 'bug'" style="font-size: 20px"/>
+        <i :class="`fa fa-${logLengthError === 0 ? 'dot-circle-o' : 'bug'}`" aria-hidden="true" style="font-size: 20px"></i>
       </el-badge>
-      <fa-icon v-else name="dot-circle-o" style="font-size: 20px"/>
+      <i v-else class="fa fa-dot-circle-o" style="font-size: 20px" aria-hidden="true"></i>
     </el-button>
   </el-tooltip>
 </template>

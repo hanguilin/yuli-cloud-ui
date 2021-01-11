@@ -1,6 +1,6 @@
 import { mapState } from 'vuex'
 import menuMixin from '../mixin/menu'
-import { createMenu } from '../libs/util.menu'
+import { createMenu } from '@/libs/util.menu'
 import BScroll from 'better-scroll'
 
 export default {
@@ -19,14 +19,6 @@ export default {
         onSelect={ this.handleMenuSelect }>
         { this.aside.map(menu => createMenu.call(this, h, menu)) }
       </el-menu>
-      {
-        this.aside.length === 0 && !this.asideCollapse
-          ? <div class="yuli-layout-header-aside-menu-empty" flex="dir:top main:center cross:center">
-            <fa-icon name="inbox"></fa-icon>
-            <span>没有侧栏菜单</span>
-          </div>
-          : null
-      }
     </div>
   },
   data () {

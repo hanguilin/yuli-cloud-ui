@@ -2,8 +2,8 @@
   <div class="d2-panel-search-item" :class="hoverMode ? 'can-hover' : ''" flex>
     <div class="d2-panel-search-item__icon" flex-box="0">
       <div class="d2-panel-search-item__icon-box" flex="main:center cross:center">
-        <fa-icon v-if="item.icon" :name="item.icon"/>
-        <fa-icon v-else name="file-o"/>
+        <i v-if="item.icon" :class="`fa fa-${item.icon}`" aria-hidden="true"></i>
+        <i v-else class="fa fa-file-o" aria-hidden="true"></i>
       </div>
     </div>
     <div class="d2-panel-search-item__info" flex-box="1" flex="dir:top">

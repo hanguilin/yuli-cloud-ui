@@ -1,7 +1,7 @@
 import axios from 'axios'
 import merge from 'lodash/merge'
 import store from '@/store'
-import util from '@/libs/util.js'
+import cookies from '@/libs/util.cookies'
 import { refreshToken } from '@/api/modules/sys'
 import qs from 'qs'
 import {
@@ -13,8 +13,8 @@ import {
 axios.defaults.timeout = 100000
 // 跨域请求，允许保存cookie
 axios.defaults.withCredentials = true
-// axios.defaults.headers = {'Content-Type': 'application/json; charset=utf-8'}
-axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8'
+axios.defaults.headers = { 'Content-Type': 'application/json; charset=utf-8' }
+// axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8'
 // 非生产环境 && 开启代理, 接口前缀统一使用[/api]前缀做代理拦截!
 const BASE_URL = process.env.NODE_ENV !== 'production' ? process.env.VUE_APP_BASE_API : process.env.VUE_APP_SERVER_URL
 // 对面暴露的基础请求路径
@@ -37,7 +37,7 @@ axios.interceptors.request.use(config => {
     })
   }
   // 请求头带上token
-  config.headers.Authorization = 'Bearer ' + util.cookies.get('token')
+  config.headers.Authorization = 'Bearer ' + cookies.get('token')
   // 请求地址处理
   config.url = BASE_URL + config.url
   const type = config.method
@@ -64,7 +64,7 @@ axios.interceptors.response.use(response => {
   if (loading) {
     loading.close()
   }
-  if (response.data && response.data.success === false) {
+  if (response.data && response.data.code !== 200) {
     Message({
       message: response.data.msg,
       type: 'error',
@@ -80,12 +80,12 @@ axios.interceptors.response.use(response => {
     loading.close()
   }
   if (error.response.status === 401) { // 超时自动刷新
-    const token = util.cookies.get('refreshToken')
+    const token = cookies.get('refreshToken')
     if (token) {
-      refreshToken({ token: util.cookies.get('refreshToken') }).then(res => {
+      refreshToken({ token: cookies.get('refreshToken') }).then(res => {
         if (res.status === 200 && res.data) {
-          util.cookies.set('token', res.data.token)
-          util.cookies.set('refreshToken', res.data.refreshToken)
+          cookies.set('token', res.data.access_token)
+          cookies.set('refreshToken', res.data.refresh_token)
         } else {
           store.dispatch('sys/account/logout')
         }

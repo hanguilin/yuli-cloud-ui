@@ -11,30 +11,26 @@
           :class="{'logo-group': true, 'logo-transition': asideTransition}"
           :style="{width: asideCollapse ? asideWidthCollapse : asideWidth}"
           flex-box="0">
-          <!-- <img v-if="asideCollapse" :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/icon-only.png`">
-          <img v-else :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/all.png`"> -->
-          <div class="product" v-if="asideCollapse">
-            <img src="/image/logo-small.png" class="logo">
-          </div>
-          <div class="product" v-else>
-            <img src="/image/logo-small.png" class="logo">
-            <h3>YULI CLOUD</h3>
-          </div>
+          <!-- <transition enter-active-class="animate__animated animate__bounceIn" leave-active-class="animate__animated animate__bounceOut"> -->
+            <div class="product">
+              <img src="/image/logo.png" class="logo">
+              <h3 v-if="!asideCollapse">YULI CLOUD</h3>
+            </div>
+          <!-- </transition> -->
           </router-link>
         <div class="toggle-aside-btn" @click="handleToggleAside" flex-box="0">
-          <fa-icon name="bars"/>
+          <i class="fa fa-bars" aria-hidden="true"></i>
         </div>
-        <d2-menu-header flex-box="1"/>
+        <menu-header flex-box="1"/>
         <!-- 顶栏右侧 -->
         <div class="d2-header-right" flex-box="0">
           <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
-          <d2-header-search @click="handleSearchClick"/>
-          <d2-header-log/>
-          <d2-header-fullscreen/>
-          <d2-header-theme/>
-          <d2-header-locales/>
-          <d2-header-color/>
-          <d2-header-user/>
+          <header-search @click="handleSearchClick"/>
+          <header-log/>
+          <header-fullscreen/>
+          <header-theme/>
+          <header-color/>
+          <header-user/>
         </div>
       </div>
       <!-- 下面 主体 -->
@@ -48,14 +44,14 @@
             width: asideCollapse ? asideWidthCollapse : asideWidth,
             opacity: this.searchActive ? 0.5 : 1
           }">
-          <d2-menu-side/>
+          <menu-side/>
         </div>
         <!-- 主体 -->
         <div class="yuli-container-main" flex-box="1" flex>
           <!-- 搜索 -->
           <transition name="fade-scale">
             <div v-if="searchActive" class="yuli-container-main-layer" flex>
-              <d2-panel-search ref="panelSearch" @close="searchPanelClose"/>
+              <panel-search ref="panelSearch" @close="searchPanelClose"/>
             </div>
           </transition>
           <!-- 内容 -->
@@ -63,7 +59,7 @@
             <div v-if="!searchActive" class="yuli-container-main-layer" flex="dir:top">
               <!-- tab -->
               <div class="yuli-container-main-header" flex-box="0">
-                <d2-tabs/>
+                <menu-tabs/>
               </div>
               <!-- 页面 -->
               <div class="yuli-container-main-body" flex-box="1">
@@ -82,15 +78,15 @@
 </template>
 
 <script>
-import d2MenuSide from './components/menu-side'
-import d2MenuHeader from './components/menu-header'
-import d2Tabs from './components/tabs'
-import d2HeaderFullscreen from './components/header-fullscreen'
-import d2HeaderSearch from './components/header-search'
-import d2HeaderTheme from './components/header-theme'
-import d2HeaderUser from './components/header-user'
-import d2HeaderLog from './components/header-log'
-import d2HeaderColor from './components/header-color'
+import MenuSide from './components/menu-side'
+import MenuHeader from './components/menu-header'
+import MenuTabs from './components/tabs'
+import HeaderFullscreen from './components/header-fullscreen'
+import HeaderSearch from './components/header-search'
+import HeaderTheme from './components/header-theme'
+import HeaderUser from './components/header-user'
+import HeaderLog from './components/header-log'
+import HeaderColor from './components/header-color'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import mixinSearch from './mixins/search'
 export default {
@@ -99,15 +95,15 @@ export default {
     mixinSearch
   ],
   components: {
-    d2MenuSide,
-    d2MenuHeader,
-    d2Tabs,
-    d2HeaderFullscreen,
-    d2HeaderSearch,
-    d2HeaderTheme,
-    d2HeaderUser,
-    d2HeaderLog,
-    d2HeaderColor
+    MenuSide,
+    MenuHeader,
+    MenuTabs,
+    HeaderFullscreen,
+    HeaderSearch,
+    HeaderTheme,
+    HeaderUser,
+    HeaderLog,
+    HeaderColor
   },
   data () {
     return {

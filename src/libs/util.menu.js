@@ -1,3 +1,4 @@
+import { uniqueId } from 'lodash'
 /**
  * @description 创建菜单
  * @param {Function} h createElement
@@ -5,11 +6,15 @@
  */
 export function elMenuItem (h, menu) {
   let icon = null
-  if (menu.icon) icon = <i class={ `fa fa-${menu.icon}` }/>
-  else icon = <i class="fa fa-file-o"/>
+  if (menu.icon) {
+    icon = <i class={ menu.icon } aria-hidden="true"></i>
+  } else {
+    icon = <i class="fa fa-file-o" aria-hidden="true"></i>
+  }
+  const uniqueTag = menu.path || uniqueId('menu-item-')
   return <el-menu-item
-    key={ menu.path }
-    index={ menu.path }>
+    key={ uniqueTag }
+    index={ uniqueTag }>
     { icon }
     <span slot="title">{ menu.title || '未命名菜单' }</span>
   </el-menu-item>
@@ -22,11 +27,15 @@ export function elMenuItem (h, menu) {
  */
 export function elSubmenu (h, menu) {
   let icon = null
-  if (menu.icon) icon = <i slot="title" class={ `fa fa-${menu.icon}` }/>
-  else icon = <i slot="title" class="fa fa-folder-o"/>
+  if (menu.icon) {
+    icon = <i class={ menu.icon } aria-hidden="true" slot="title"></i>
+  } else {
+    icon = <i class="fa fa-file-o" aria-hidden="true"></i>
+  }
+  const uniqueTag = menu.path || uniqueId('menu-item-')
   return <el-submenu
-    key={ menu.path }
-    index={ menu.path }>
+    key={ uniqueTag }
+    index={ uniqueTag }>
     { icon }
     <span slot="title">{ menu.title || '未命名菜单' }</span>
     { menu.children.map(child => createMenu.call(this, h, child)) }

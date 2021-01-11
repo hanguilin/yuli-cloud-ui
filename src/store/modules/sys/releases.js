@@ -1,4 +1,4 @@
-import util from '@/libs/util.js'
+import log from '@/libs/util.log'
 
 export default {
   namespaced: true,
@@ -8,7 +8,7 @@ export default {
      * @param {Object} state state
      */
     versionShow () {
-      util.log.capsule('YULI-CLOUD', `v${process.env.VUE_APP_VERSION}`)
+      log.capsule('YULI-CLOUD', `v${process.env.VUE_APP_VERSION}`)
     }
   }
 }

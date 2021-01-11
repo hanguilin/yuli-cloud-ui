@@ -1,6 +1,6 @@
 import { Message } from 'element-ui'
 import store from '@/store'
-import util from '@/libs/util'
+import log from '@/libs/util.log'
 
 /**
  * @description 安全地解析 json 字符串
@@ -64,7 +64,7 @@ export function errorLog (error) {
   })
   // 打印到控制台
   if (process.env.NODE_ENV === 'development') {
-    util.log.danger('>>>>>> Error >>>>>>')
+    log.danger('>>>>>> Error >>>>>>')
     console.log(error)
   }
   // 显示提示

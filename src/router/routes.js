@@ -21,7 +21,7 @@ const frameIn = {
         title: '首页',
         auth: true
       },
-      component: _import('system/index/index')
+      component: _import('sys/index/index')
     },
     // 系统 前端日志
     {
@@ -31,7 +31,7 @@ const frameIn = {
         title: '前端日志',
         auth: true
       },
-      component: _import('system/log/index')
+      component: _import('sys/log/index')
     },
     // 刷新页面 必须保留
     {
@@ -77,12 +77,12 @@ const frameOut = [
   {
     path: '/login',
     name: 'login',
-    component: _import('system/login/index')
+    component: _import('sys/login/index')
   },
   {
     path: '/404',
     name: '404',
-    component: _import('system/error/404/index')
+    component: _import('sys/error/404/index')
   }
 ]
 

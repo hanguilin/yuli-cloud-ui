@@ -1,17 +1,22 @@
 // Element
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+// fontawesome
+import '@/assets/lib/font-awesome-4.7.0/css/font-awesome.min.css'
 // flex 布局库
 import 'flex.css'
-// 组件
-import '@/components'
-// svg 图标
-import '@/assets/svg-icons'
-
+// 动画
+import animated from 'animate.css'
+// axios请求
+import httpRequest from '@/libs/util.request'
 // 功能插件
 import pluginError from '@/plugin/error'
 import pluginLog from '@/plugin/log'
 import pluginOpen from '@/plugin/open'
+// 工具类
+import util from '@/libs/util'
+// 自定义指令
+import '@/directive'
 
 export default {
   async install (Vue, options) {
@@ -26,11 +31,18 @@ export default {
     Vue.prototype.$version = process.env.VUE_APP_VERSION
     // 构建时间
     Vue.prototype.$buildTime = process.env.VUE_APP_BUILD_TIME
+    // axios请求方法
+    Vue.prototype.$http = httpRequest
+    // 工具类
+    Vue.prototype.$util = util
+
     // Element
     Vue.use(ElementUI)
     // 插件
     Vue.use(pluginError)
     Vue.use(pluginLog)
     Vue.use(pluginOpen)
+    // animated动画
+    Vue.use(animated)
   }
 }

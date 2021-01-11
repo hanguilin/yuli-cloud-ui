@@ -6,7 +6,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { getMenu } from '@/api/modules/sys/index'
 import store from '@/store'
-import util from '@/libs/util.js'
+import util from '@/libs/util'
 // 路由数据
 import { frameInRoutes, frameOutRoutes } from './routes'
 
@@ -61,6 +61,7 @@ router.beforeEach(async (to, from, next) => {
         store.commit('sys/menu/asideSet', menuAside)
         // 设置name和meta.title属性
         const poolMenu = fnGenPoolMenu(menuAside)
+        console.log('poolMenu', poolMenu)
         // 设置框架内展示到页签的路由
         store.commit('sys/page/init', poolMenu.concat(frameInRoutes))
         // 设置可搜索的路由
@@ -126,9 +127,8 @@ function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
       }
       try {
         // 去除前缀/
-        let componentName = `${menuList[i].path.split('?')[0]}`
-        componentName = componentName.startsWith('/') ? componentName.substr(1, componentName.length) : componentName
-        route.component = _import(componentName) || null
+        const componentPath = util.removePrefix('/', menuList[i].path.split('?')[0])
+        route.component = _import(componentPath) || null
       } catch (e) {
         console.error(e)
       }
@@ -151,10 +151,13 @@ function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
 
 /**
  * 生成格式化的菜单数据
- * @param {*} menu 菜单
+ * @param {*} menu 动态菜单数据
  */
 function fnGenPoolMenu (menu) {
   return menu.map(e => {
+    if (e.children && e.children.length > 0) {
+      e.children = fnGenPoolMenu(e.children)
+    }
     return {
       ...e,
       meta: {

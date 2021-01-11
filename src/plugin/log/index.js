@@ -1,11 +1,11 @@
 import store from '@/store'
-import util from '@/libs/util'
+import log from '@/libs/util.log'
 
 export default {
   install (Vue, options) {
     // 快速打印 log
     Vue.prototype.$log = {
-      ...util.log,
+      ...log,
       push (data) {
         if (typeof data === 'string') {
           // 如果传递来的数据是字符串

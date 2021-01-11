@@ -8,9 +8,7 @@
         class="d2-ml-0 d2-mr btn-text can-hover"
         type="text"
         @click="dialogVisible = true">
-        <fa-icon
-          name="diamond"
-          style="font-size: 16px"/>
+          <i class="fa fa-diamond" style="font-size: 16px" aria-hidden="true"></i>
       </el-button>
     </el-tooltip>
     <el-dialog

@@ -1,8 +1,8 @@
 <template>
   <el-tooltip effect="dark" :content="active ? '退出全屏' : '全屏'" placement="bottom">
     <el-button class="d2-mr btn-text can-hover" type="text" @click="toggle">
-      <fa-icon v-if="active" name="compress"/>
-      <fa-icon v-else name="arrows-alt" style="font-size: 16px"/>
+      <i v-if="active" class="fa fa-compress" aria-hidden="true"></i>
+      <i v-else class="fa fa-arrows-alt" aria-hidden="true" style="font-size: 16px"></i>
     </el-button>
   </el-tooltip>
 </template>

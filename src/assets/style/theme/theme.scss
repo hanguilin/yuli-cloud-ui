@@ -1,6 +1,30 @@
 // 每个主题特有的设置
 .theme-#{$theme-name} {
 
+  .table, .el-pagination {
+    margin-top: 10px;
+  }
+  .el-dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: 0!important;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    max-height: calc(100% - 30px);
+    max-width: calc(100% - 30px);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+  .el-dialog>.el-dialog__body {
+    overflow: auto;
+  }
+
   .el-message {
     &.el-message--info {
       background-color: $theme-message-info-background-color;
@@ -305,6 +329,7 @@
       }
       // 主体
       .yuli-container-main-body {
+        overflow: auto;
         margin: 10px 0 0 10px;
         padding: 10px;
         background-color: #fff;

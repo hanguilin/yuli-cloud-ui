@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { get } from 'lodash'
-import util from '@/libs/util.js'
+import cookies from '@/libs/util.cookies'
 
 export default {
   namespaced: true,
@@ -46,9 +46,9 @@ export default {
           // 当前用户信息
           user: rootState.sys.user.info,
           // 当前用户的 uuid
-          userId: util.cookies.get('userId'),
+          userId: cookies.get('userId'),
           // 当前的 token
-          token: util.cookies.get('token'),
+          token: cookies.get('token'),
           // 当前地址
           url: get(window, 'location.href', ''),
           // 用户设置

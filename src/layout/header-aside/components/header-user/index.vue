@@ -3,7 +3,7 @@
     <span class="btn-text">{{info.name ? `你好 ${info.name}` : '未登录'}}</span>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item @click.native="logOff">
-        <fa-icon name="power-off" class="d2-mr-5"/>
+        <i class="fa fa-power-off d2-mr-5" aria-hidden="true"></i>
         注销
       </el-dropdown-item>
     </el-dropdown-menu>

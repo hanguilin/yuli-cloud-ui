@@ -1,7 +1,7 @@
 import { throttle } from 'lodash'
 import { mapState } from 'vuex'
 import menuMixin from '../mixin/menu'
-import { createMenu } from '../libs/util.menu'
+import { createMenu } from '@/libs/util.menu'
 
 export default {
   name: 'yuli-layout-header-aside-menu-header',

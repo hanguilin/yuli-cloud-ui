@@ -381,7 +381,8 @@ export default {
           if (route.children && route.children.length > 0) {
             push(route.children)
           } else {
-            if (!route.hidden) {
+            // type 0->目录， 1->菜单， 2->按钮
+            if (!route.hidden || route.type === '1') {
               const { meta, name, path } = route
               pool.push({ meta, name, path })
             }

@@ -1,6 +1,6 @@
 import low from 'lowdb'
 import LocalStorage from 'lowdb/adapters/LocalStorage'
-import util from '@/libs/util'
+import cookies from '@/libs/util.cookies'
 import { cloneDeep } from 'lodash'
 
 const adapter = new LocalStorage(`${process.env.VUE_APP_TITLE}-${process.env.VUE_APP_VERSION}`)
@@ -31,7 +31,7 @@ export function pathInit ({
   validator = () => true,
   defaultValue = ''
 }) {
-  const userId = util.cookies.get('userId') || 'ghostUserId'
+  const userId = cookies.get('userId') || 'ghostUserId'
   const currentPath = `${dbName}.${user ? `user.${userId}` : 'public'}${path ? `.${path}` : ''}`
   const value = db.get(currentPath).value()
   if (!(value !== undefined && validator(value))) {

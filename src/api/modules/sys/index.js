@@ -22,7 +22,7 @@ export function refreshToken ({ token }) {
 
 export function getMenu () {
   return request({
-    url: '/system/menu/tree',
+    url: '/sys/menu/tree/own',
     method: 'get'
   })
 }

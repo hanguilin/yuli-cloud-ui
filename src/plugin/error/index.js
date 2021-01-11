@@ -1,6 +1,6 @@
 import { get, isObject } from 'lodash'
 import store from '@/store'
-import util from '@/libs/util'
+import log from '@/libs/util.log'
 
 export default {
   install (Vue, options) {
@@ -16,12 +16,12 @@ export default {
             }
           })
           if (process.env.NODE_ENV !== 'development') return
-          util.log.capsule('YULI-CLOUD', 'ErrorHandler', logType)
-          util.log.danger('>>>>>> 错误信息 >>>>>>')
+          log.capsule('YULI-CLOUD', 'ErrorHandler', logType)
+          log.danger('>>>>>> 错误信息 >>>>>>')
           console.log(info)
-          util.log.danger('>>>>>> Vue 实例 >>>>>>')
+          log.danger('>>>>>> Vue 实例 >>>>>>')
           console.log(vm)
-          util.log.danger('>>>>>> Error >>>>>>')
+          log.danger('>>>>>> Error >>>>>>')
           console.log(error)
         })
       }

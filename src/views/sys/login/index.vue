@@ -15,6 +15,11 @@
         class="page-login--content"
         flex="dir:top main:justify cross:stretch box:justify">
         <div class="page-login--content-header"></div>
+        <transition name="slide" 
+					appear
+					enter-active-class="animate__animated animate__fast animate__slideInDown"
+					leave-active-class="animate__animated animate__fast animate__bounceOut"
+					appear-active-class="animate__animated animate__fast animate__slideInDown">
         <div
           class="page-login--content-main"
           flex="dir:top main:center cross:center">
@@ -79,6 +84,7 @@
             </el-button>
           </div>
         </div>
+                  </transition>
         <div class="page-login--content-footer">
           <p class="page-login--content-footer-locales"></p>
           <p class="page-login--content-footer-copyright">

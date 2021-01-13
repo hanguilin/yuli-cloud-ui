@@ -29,7 +29,7 @@
           ]">
             <el-select v-model="inputForm.system" placeholder="请选择"  style="width: 100%;">
               <el-option
-                v-for="item in [{ id: '1', label: '是', value: '1' }, { id: '2', label: '否', value: '0' }]"
+                v-for="item in [{ id: '1', label: '是', value: '0' }, { id: '2', label: '否', value: '1' }]"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -44,7 +44,7 @@
           ]">
             <el-select v-model="inputForm.enabled" placeholder="请选择"  style="width: 100%;">
               <el-option
-                v-for="item in [{ id: '1', label: '是', value: '1' }, { id: '2', label: '否', value: '0' }]"
+                v-for="item in [{ id: '1', label: '是', value: '0' }, { id: '2', label: '否', value: '1' }]"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -79,8 +79,8 @@ export default {
         name: '',
         enName: '',
         remark: '',
-        system: '1',
-        enabled: '1'
+        system: '0',
+        enabled: '0'
       },
       dataRule: {
         name: [
@@ -125,7 +125,13 @@ export default {
       this.$refs.inputForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          this.$http.post('/sys/role/save', { data: this.inputForm }).then(({ data }) => {
+          let request
+          if (this.method === 'edit') {
+            request = this.$http.put('/sys/role/update', this.inputForm)
+          } else {
+            request = this.$http.post('/sys/role/save', this.inputForm)
+          }
+          request.then(({ data }) => {
             if (data && data.code === 200) {
               this.$message.success(data.msg)
               this.visible = false

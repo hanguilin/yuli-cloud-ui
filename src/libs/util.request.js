@@ -82,10 +82,10 @@ axios.interceptors.response.use(response => {
   if (error.response.status === 401) { // 超时自动刷新
     const token = cookies.get('refreshToken')
     if (token) {
-      refreshToken({ token: cookies.get('refreshToken') }).then(res => {
-        if (res.status === 200 && res.data) {
-          cookies.set('token', res.data.access_token)
-          cookies.set('refreshToken', res.data.refresh_token)
+      refreshToken({ token: cookies.get('refreshToken') }).then(({ data }) => {
+        if (data && data.code === 200) {
+          cookies.set('token', data.data.access_token)
+          cookies.set('refreshToken', data.data.refresh_token)
         } else {
           store.dispatch('sys/account/logout')
         }

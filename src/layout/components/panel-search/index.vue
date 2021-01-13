@@ -1,7 +1,7 @@
 <template>
   <div class="panel-search" flex="dir:top">
     <div class="panel-search__input-group" flex-box="0" flex="dir:top main:center cross:center" @click.self="handlePanelClick">
-      <img src="/image/logo-middle.png" class="logo">
+      <img src="/image/logo.png" class="logo">
       <h3>YULI CLOUD</h3>  
       <el-autocomplete
         class="panel-search__input"
@@ -192,9 +192,6 @@ export default {
   .panel-search__results-group {
     overflow: auto;
     margin-bottom: -20px;
-    .panel-search__results-group-inner {
-      margin: -20px;
-    }
   }
 }
 </style>

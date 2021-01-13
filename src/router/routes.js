@@ -1,4 +1,4 @@
-import layoutHeaderAside from '@/layout/header-aside'
+import layout from '@/layout/index.vue'
 import util from '@/libs/util'
 import cookies from '@/libs/util.cookies'
 
@@ -11,7 +11,7 @@ const _import = require('./import-' + process.env.NODE_ENV)
 const frameIn = {
   path: '/',
   redirect: { name: 'index' },
-  component: layoutHeaderAside,
+  component: layout,
   children: [
     // 首页
     {

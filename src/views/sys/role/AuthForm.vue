@@ -1,51 +1,59 @@
 <template>
-  <el-dialog
-    title="权限设置"
-    :close-on-click-modal="false"
-     v-dialogDrag
-     width="350px"
-    :visible.sync="visible">
-    <el-form class="auth" :model="inputForm" status-icon v-loading="loading" ref="inputForm" @keyup.enter.native="inputFormSubmit()"
+  <el-dialog title="权限设置"
+             :close-on-click-modal="false"
+             v-dialogDrag
+             width="350px"
+             :visible.sync="visible">
+    <el-form class="auth"
+             :model="inputForm"
+             status-icon
+             v-loading="loading"
+             ref="inputForm"
+             @keyup.enter.native="inputFormSubmit()"
              @submit.native.prevent>
-             <el-tabs type="border-card">
-              <el-tab-pane>
-                <span slot="label"><i class="fa fa-navicon"></i> 菜单权限</span>
-                        <el-scrollbar style="height: 450px">
-                          <el-tree
-                            :data="menuList"
-                            :props=" {
+      <el-tabs type="border-card">
+        <el-tab-pane>
+          <span slot="label"><i class="fa fa-navicon"></i> 菜单权限</span>
+          <el-scrollbar style="height: 450px">
+            <el-tree :data="menuList"
+                     :props=" {
                                 label: 'title',
                                 children: 'children'
                               }"
-                            node-key="id"
-                            ref="menuListTree"
-                            :default-expanded-keys="['1']"
-                            :default-checked-keys="menuCheckedKeys"
-                            show-checkbox>
-                          </el-tree>
-                        </el-scrollbar>
-              </el-tab-pane>
-              <el-tab-pane label="数据权限">
-                 <span slot="label"><i class="fa fa-database"></i> 数据权限</span>
-                    <el-scrollbar style="height: 450px">
-                      <el-tree
-                        :data="dataRuleList"
-                        :props=" {
+                     node-key="id"
+                     ref="menuListTree"
+                     :default-expanded-keys="['1']"
+                     :default-checked-keys="menuCheckedKeys"
+                     show-checkbox>
+            </el-tree>
+          </el-scrollbar>
+        </el-tab-pane>
+        <el-tab-pane label="数据权限">
+          <span slot="label"><i class="fa fa-database"></i> 数据权限</span>
+          <el-scrollbar style="height: 450px">
+            <el-tree :data="dataRuleList"
+                     :props=" {
                           label: 'name',
                           children: 'children'
                         }"
-                        node-key="id"
-                        ref="dataRuleTree"
-                        :default-expanded-keys="['1']"
-                        :default-checked-keys="dataRuleCheckedKeys"
-                        show-checkbox>
-                      </el-tree>
-                    </el-scrollbar>
-              </el-tab-pane>
-            </el-tabs>
+                     node-key="id"
+                     ref="dataRuleTree"
+                     :default-expanded-keys="['1']"
+                     :default-checked-keys="dataRuleCheckedKeys"
+                     show-checkbox>
+            </el-tree>
+          </el-scrollbar>
+        </el-tab-pane>
+      </el-tabs>
     </el-form>
-     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" icon="el-icon-check" size="small" plain @click="inputFormSubmit()" v-noMoreClick>保存</el-button>
+    <span slot="footer"
+          class="dialog-footer">
+      <el-button type="primary"
+                 icon="el-icon-check"
+                 size="small"
+                 plain
+                 @click="inputFormSubmit()"
+                 v-noMoreClick>保存</el-button>
     </span>
   </el-dialog>
 </template>
@@ -88,7 +96,10 @@ export default {
             if (data && data.code === 200) {
               this.loading = false
               this.inputForm = this.$util.recover(this.inputForm, data.data)
-              this.$refs.menuListTree.setCheckedKeys(data.data.menuIds.split(','))
+              if (data.data.menuIds) {
+                // 选中菜单
+                this.$refs.menuListTree.setCheckedKeys(data.data.menuIds.split(','))
+              }
               // this.$refs.dataRuleTree.setCheckedKeys(data.role.dataRuleIds.split(','))
             }
           })
@@ -124,17 +135,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .el-tree {
-    min-width: 100%;
-    display: inline-block !important;
-  }
- .auth {
-   margin-top: -30px;
-   margin-right: -19px;
-   margin-bottom: -30px;
-   margin-left: -19px;
- }
-  .el-scrollbar {
-    height: 100%;
-  }
+.el-tree {
+  min-width: 100%;
+  display: inline-block !important;
+}
+.auth {
+  margin-top: -30px;
+  margin-right: -19px;
+  margin-bottom: -30px;
+  margin-left: -19px;
+}
+.el-scrollbar {
+  height: 100%;
+}
 </style>

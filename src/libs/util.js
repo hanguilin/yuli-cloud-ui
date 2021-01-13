@@ -2,7 +2,9 @@ import router from '@/router'
 import store from '@/store'
 import cookies from '@/libs/util.cookies'
 
-const util = {}
+const util = {
+  cookies
+}
 
 /**
  * @description 更新标题
@@ -32,13 +34,18 @@ util.open = function (url) {
  * @param {*} menu 菜单
  */
 util.formatMenu = function (menu) {
-  return menu.map(e => ({
-    ...e,
-    path: e.path,
-    ...e.children ? {
-      children: util.formatMenu(e.children)
-    } : {}
-  }))
+  return menu.map(e => {
+    // 类型为外链时，给路径加上/，使其被路由捕获
+    if (e.target === '1') {
+      e.path = '/' + e.path
+    }
+    return {
+      ...e,
+      ...e.children ? {
+        children: util.formatMenu(e.children)
+      } : {}
+    }
+  })
 }
 
 /**

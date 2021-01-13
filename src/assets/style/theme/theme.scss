@@ -1,9 +1,10 @@
 // 每个主题特有的设置
 .theme-#{$theme-name} {
-
+  // 表格间距
   .table, .el-pagination {
     margin-top: 10px;
   }
+  // dialog居中
   .el-dialog {
     position: absolute;
     top: 50%;
@@ -21,8 +22,16 @@
     -ms-flex-direction: column;
     flex-direction: column;
   }
+  // dialog内容超出显示滚动条
   .el-dialog>.el-dialog__body {
     overflow: auto;
+  }
+  // 抽屉去除边框
+  .el-drawer {
+    outline: none;
+  }
+  .el-drawer__header>span {
+    outline: none;
   }
 
   .el-message {

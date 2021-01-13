@@ -61,7 +61,6 @@ router.beforeEach(async (to, from, next) => {
         store.commit('sys/menu/asideSet', menuAside)
         // 设置name和meta.title属性
         const poolMenu = fnGenPoolMenu(menuAside)
-        console.log('poolMenu', poolMenu)
         // 设置框架内展示到页签的路由
         store.commit('sys/page/init', poolMenu.concat(frameInRoutes))
         // 设置可搜索的路由
@@ -126,9 +125,17 @@ function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
         }
       }
       try {
-        // 去除前缀/
-        const componentPath = util.removePrefix('/', menuList[i].path.split('?')[0])
-        route.component = _import(componentPath) || null
+        // 系统页面
+        if (menuList[i].target === '0') {
+          // 去除前缀/
+          const componentPath = util.removePrefix('/', menuList[i].path.split('?')[0])
+          route.component = _import(componentPath) || null
+        } else if (menuList[i].target === '1') {
+          // 外链
+          route.path = '/' + route.path
+          route.meta.iframeUrl = menuList[i].path
+          route.meta.type = 'iframe'
+        }
       } catch (e) {
         console.error(e)
       }

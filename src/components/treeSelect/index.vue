@@ -1,16 +1,23 @@
 <template>
-  <el-select :value="valueTitle" :size="size"  :disabled="disabled" :clearable="clearable" :placeholder="placeholder" @clear="clearHandle">
-    <el-option :value="valueTitle"  :label="valueTitle" class="options">
-      <el-tree  id="tree-option"
-        ref="selectTree"
-        :accordion="accordion"
-        :data="optionData"
-        :show-checkbox="showCheckbox"
-        :props="props"
-        highlight-current
-        :node-key="props.value"    
-        :default-expanded-keys="defaultExpandedKey"
-        @node-click="handleNodeClick">
+  <el-select :value="valueTitle"
+             :size="size"
+             :disabled="disabled"
+             :clearable="clearable"
+             :placeholder="placeholder"
+             @clear="clearHandle">
+    <el-option :value="valueTitle"
+               :label="valueTitle"
+               class="options">
+      <el-tree id="tree-option"
+               ref="selectTree"
+               :accordion="accordion"
+               :data="optionData"
+               :show-checkbox="showCheckbox"
+               :props="props"
+               highlight-current
+               :node-key="props.value"
+               :default-expanded-keys="defaultExpandedKey"
+               @node-click="handleNodeClick">
       </el-tree>
     </el-option>
   </el-select>
@@ -36,7 +43,7 @@ export default {
       type: Array,
       default: () => { return [] }
     },
-     /* 选项列表数据(树形结构的对象数组) */
+    /* 选项列表数据(树形结构的对象数组) */
     list: {
       type: Array,
       default: () => { return null }
@@ -46,7 +53,7 @@ export default {
       type: String,
       default: () => { return null }
     },
-        /* 初始值 */
+    /* 初始值 */
     url: {
       type: String,
       default: () => { return null }
@@ -94,11 +101,8 @@ export default {
       let interval = setInterval(() => {
         this.placeholder = this.placeholder + '.'
       }, 500)
-      this.$http({
-        url: this.url,
-        method: 'get'
-      }).then(({data}) => {
-        this.valueData = data.treeData
+      this.$http.get(this.url).then(({ data }) => {
+        this.valueData = data.data
         this.$nextTick(() => {
           this.initHandle()
           this.placeholder = '请选择'
@@ -127,7 +131,7 @@ export default {
         if (scrollWrap) { scrollWrap.style.cssText = 'margin: 0px; max-height: none; overflow: hidden;' }
         if (scrollBar) {
           scrollBar.forEach(ele => {
-          // eslint-disable-next-line no-return-assign
+            // eslint-disable-next-line no-return-assign
             return ele.style.width = 0
           })
         }
@@ -177,7 +181,7 @@ export default {
         let cloneData = JSON.parse(JSON.stringify(this.list))      // 对源数据深度克隆
         return cloneData.filter(father => {                      // 循环所有项，并添加children属性
           let branchArr = cloneData.filter(child => father.id === child.parentId)       // 返回每一项的子级数组
-            // eslint-disable-next-line no-unused-expressions
+          // eslint-disable-next-line no-unused-expressions
           branchArr.length > 0 ? father.children = branchArr : ''   // 给父级添加一个children属性，并赋值
           return father.parentId === '0'      // 返回第一层
         })
@@ -191,36 +195,36 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .el-select{
-    width: 100%;
-  }
-  .el-scrollbar .el-scrollbar__view .el-select-dropdown__item{
-    height: auto;
-    max-height: 274px;
-    padding: 0;
-    overflow: hidden;
-    overflow-y: auto;
-  }
-  .el-select-dropdown__item.selected{
-    font-weight: normal;
-  }
-  ul li >>>.el-tree .el-tree-node__content{
-    height:auto;
-    padding: 0 20px;
-  }
-  .el-tree-node__label{
-    font-weight: normal;
-  }
-  .el-tree >>>.is-current .el-tree-node__label{
-    color: #409EFF;
-    font-weight: 700;
-  }
-  .el-tree >>>.is-current .el-tree-node__children .el-tree-node__label{
-    color:#606266;
-    font-weight: normal;
-  }
-  /* 开发禁用 */
-  /* .el-tree-node:focus>.el-tree-node__content{
+.el-select {
+  width: 100%;
+}
+.el-scrollbar .el-scrollbar__view .el-select-dropdown__item {
+  height: auto;
+  max-height: 274px;
+  padding: 0;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.el-select-dropdown__item.selected {
+  font-weight: normal;
+}
+ul li >>> .el-tree .el-tree-node__content {
+  height: auto;
+  padding: 0 20px;
+}
+.el-tree-node__label {
+  font-weight: normal;
+}
+.el-tree >>> .is-current .el-tree-node__label {
+  color: #409eff;
+  font-weight: 700;
+}
+.el-tree >>> .is-current .el-tree-node__children .el-tree-node__label {
+  color: #606266;
+  font-weight: normal;
+}
+/* 开发禁用 */
+/* .el-tree-node:focus>.el-tree-node__content{
     background-color:transparent;
     background-color: #f5f7fa;
     color: #c0c4cc;

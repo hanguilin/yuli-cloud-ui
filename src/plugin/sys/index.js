@@ -15,6 +15,8 @@ import pluginLog from '@/plugin/log'
 import pluginOpen from '@/plugin/open'
 // 工具类
 import util from '@/libs/util'
+// 表单校验扩展
+import validator from '@/libs/validator'
 // 自定义指令
 import '@/directive'
 
@@ -35,6 +37,8 @@ export default {
     Vue.prototype.$http = httpRequest
     // 工具类
     Vue.prototype.$util = util
+    // 校验类
+    Vue.prototype.validator = validator
 
     // Element
     Vue.use(ElementUI)

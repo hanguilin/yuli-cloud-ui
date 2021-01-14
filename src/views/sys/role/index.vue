@@ -30,7 +30,8 @@
       </el-form-item>
     </el-form>
     <el-row>
-      <el-button type="primary"
+      <el-button v-if="hasPermission('sys:role:add')"
+                 type="primary"
                  size="small"
                  icon="el-icon-plus"
                  @click="add()">新建</el-button>

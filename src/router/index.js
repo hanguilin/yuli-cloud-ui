@@ -4,12 +4,12 @@ import cloneDeep from 'lodash/cloneDeep'
 // 进度条
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { getMenu } from '@/api/modules/sys/index'
+import { getMenu, getPermission } from '@/api/modules/sys/index'
 import store from '@/store'
 import util from '@/libs/util'
-import { formatMenu } from '@/libs/util.menu'
 // 路由数据
 import { frameInRoutes, frameOutRoutes } from './routes'
+import { hasPermission } from '@/libs/util.permission'
 
 // 开发环境不使用懒加载
 const _import = require('./import-' + process.env.NODE_ENV)
@@ -40,6 +40,7 @@ const router = new VueRouter({
  * 权限验证
  */
 router.beforeEach(async (to, from, next) => {
+  hasPermission()
   // 进度条
   NProgress.start()
   // 关闭搜索面板
@@ -56,23 +57,26 @@ router.beforeEach(async (to, from, next) => {
         const menu = res.data.data
         // 根据返回数据添加动态路由
         fnAddDynamicMenuRoutes(menu)
-        console.log('menu', menu)
-        // 格式化左侧菜单数据
-        const menuAside = formatMenu(menu)
         /// 设置数据到vuex
-        store.commit('sys/menu/asideSet', menuAside)
+        store.commit('sys/menu/asideSet', menu)
         // 设置name和meta.title属性
-        const poolMenu = fnGenPoolMenu(menuAside)
+        const poolMenu = fnGenPoolMenu(menu)
         // 设置框架内展示到页签的路由
         store.commit('sys/page/init', poolMenu.concat(frameInRoutes))
         // 设置可搜索的路由
-        store.commit('sys/search/init', menuAside)
+        store.commit('sys/search/init', menu)
         // 持久化数据加载上次退出时的多页列表
         store.dispatch('sys/page/openedLoad', null, { root: true })
         // 保证动态路由有效性
         next({ ...to, replace: true })
       } else {
         next()
+      }
+    })
+    // 设置权限标识到vuex
+    getPermission().then(({ data }) => {
+      if (data && data.code === 200) {
+        store.dispatch('sys/permission/set', data.data, { root: true })
       }
     })
   }

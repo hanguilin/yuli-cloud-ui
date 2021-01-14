@@ -2,7 +2,7 @@ import { Message, MessageBox } from 'element-ui'
 import util from '@/libs/util'
 import cookies from '@/libs/util.cookies'
 import router from '@/router'
-import { sysLogin } from '@/api/modules/sys'
+import { sysLogin, logoutRequest } from '@/api/modules/sys'
 
 export default {
   namespaced: true,
@@ -18,7 +18,7 @@ export default {
       username = '',
       password = ''
     } = {}) {
-      await sysLogin({ username, password }).then(({ data } ) => {
+      await sysLogin({ username, password }).then(({ data }) => {
         if (data && data.code === 200) {
           const res = data.data
           cookies.set('userId', res.user_id)
@@ -45,7 +45,13 @@ export default {
       async function logout () {
         // 跳转路由
         router.push({ name: 'login' })
-        util.clearLoginInfo()
+        logoutRequest().then(({ data }) => {
+          if (data && data.code === 200) {
+            util.clearLoginInfo()
+          } else {
+            Message({ message: '用户注销失败', type: 'error' })
+          }
+        })
       }
       // 判断是否需要确认
       if (confirm) {

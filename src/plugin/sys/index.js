@@ -38,6 +38,8 @@ export default {
     Vue.prototype.$util = util
     // 校验类
     Vue.prototype.validator = validator
+    // 权限判断
+    Vue.prototype.hasPermission = util.permission.hasPermission
 
     // Element
     Vue.use(ElementUI)

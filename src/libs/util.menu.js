@@ -51,18 +51,3 @@ export function createMenu (h, menu) {
   if (menu.children === undefined) return elMenuItem.call(this, h, menu)
   return elSubmenu.call(this, h, menu)
 }
-
-/**
- * 格式化el-menu菜单
- * @param {*} menu 菜单
- */
-export function formatMenu (menu) {
-  return menu.map(e => {
-    return {
-      ...e,
-      ...e.children ? {
-        children: formatMenu(e.children)
-      } : {}
-    }
-  })
-}

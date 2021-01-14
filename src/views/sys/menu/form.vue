@@ -41,7 +41,7 @@
                     v-model="inputForm.title"
                     :placeholder="typeList[inputForm.type] + '名称'"></el-input>
         </el-form-item>
-        <el-form-item v-if="inputForm.type === '1' || inputForm.type === '2' || inputForm.type === '3'"
+        <el-form-item v-if="inputForm.type === '1' || inputForm.type === '3'"
                       label="链接类型"
                       prop="target">
           <el-select v-model="inputForm.target"
@@ -55,14 +55,14 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="inputForm.type === '1' || inputForm.type === '2' || inputForm.type === '3'"
+        <el-form-item v-if="inputForm.type === '1' || inputForm.type === '3'"
                       label="路由地址"
                       prop="path">
           <el-input maxlength="1000"
                     v-model="inputForm.path"
                     placeholder="请填写路由路径"></el-input>
         </el-form-item>
-        <el-form-item v-if="inputForm.target === '1' && (inputForm.type === '1' || inputForm.type === '2' || inputForm.type === '3')"
+        <el-form-item v-if="inputForm.target === '1' && (inputForm.type === '1' || inputForm.type === '3')"
                       label="链接地址"
                       prop="url">
           <el-input maxlength="1000"

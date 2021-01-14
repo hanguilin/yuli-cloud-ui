@@ -1,9 +1,11 @@
 import router from '@/router'
 import store from '@/store'
 import cookies from '@/libs/util.cookies'
+import permission from '@/libs/util.permission'
 
 const util = {
-  cookies
+  cookies,
+  permission
 }
 
 /**

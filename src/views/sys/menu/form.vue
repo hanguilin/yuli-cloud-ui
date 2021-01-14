@@ -29,24 +29,17 @@
                 label: 'title',         // 显示名称
                 children: 'children'    // 子级字段名
               }"
-                      :url="`/sys/menu/tree?extId=${inputForm.id}`"
-                      :value="inputForm.parent.id"
+                      :url="`/sys/menu/tree?excludeId=${inputForm.id}`"
+                      :value="inputForm.parentId"
                       :clearable="true"
                       :accordion="true"
-                      @getValue="(value) => {inputForm.parent.id=value}" />
+                      @getValue="(value) => {inputForm.parentId=value}" />
         </el-form-item>
         <el-form-item :label="typeList[inputForm.type] + '名称'"
                       prop="title">
           <el-input maxlength="50"
                     v-model="inputForm.title"
                     :placeholder="typeList[inputForm.type] + '名称'"></el-input>
-        </el-form-item>
-        <el-form-item v-if="inputForm.type === '1' || inputForm.type === '2' || inputForm.type === '3'"
-                      label="链接地址"
-                      prop="path">
-          <el-input maxlength="1000"
-                    v-model="inputForm.path"
-                    placeholder="请填写路由路径或者超链接"></el-input>
         </el-form-item>
         <el-form-item v-if="inputForm.type === '1' || inputForm.type === '2' || inputForm.type === '3'"
                       label="链接类型"
@@ -61,6 +54,20 @@
                        :value="item.value">
             </el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item v-if="inputForm.type === '1' || inputForm.type === '2' || inputForm.type === '3'"
+                      label="路由地址"
+                      prop="path">
+          <el-input maxlength="1000"
+                    v-model="inputForm.path"
+                    placeholder="请填写路由路径"></el-input>
+        </el-form-item>
+        <el-form-item v-if="inputForm.target === '1' && (inputForm.type === '1' || inputForm.type === '2' || inputForm.type === '3')"
+                      label="链接地址"
+                      prop="url">
+          <el-input maxlength="1000"
+                    v-model="inputForm.url"
+                    placeholder="请填写超链接"></el-input>
         </el-form-item>
         <el-form-item v-if="inputForm.type !== '2'  && inputForm.type !== '3'"
                       label="菜单图标"
@@ -140,10 +147,9 @@ export default {
         id: '',
         type: '1',
         title: '',
-        parent: {
-          id: ''
-        },
+        parentId: '',
         path: '',
+        url: '',
         permission: '',
         sort: 30,
         icon: '',
@@ -183,7 +189,7 @@ export default {
       this.loading = false
       this.$nextTick(() => {
         this.$refs.inputForm.resetFields()
-        this.inputForm.parent.id = obj.parent.id
+        this.inputForm.parentId = obj.parentId
         if (method === 'edit' || method === 'view') { // 修改或者查看
           this.$http.get(`/sys/menu/info/${this.inputForm.id}`).then(({ data }) => {
             this.inputForm = this.$util.recover(this.inputForm, data.data)
@@ -195,13 +201,13 @@ export default {
     getMenuTree (obj, method) {
       this.$http.get('/sys/menu/tree', { params: { excludeId: this.inputForm.id } }).then(({ data }) => {
         this.menuList = data.data
-        this.inputForm.parent.id = ''
+        this.inputForm.parentId = ''
       }).then(() => {
         this.visible = true
         this.$nextTick(() => {
           this.$refs.menuParentTree.clearHandle()
           this.$refs.inputForm.resetFields()
-          this.inputForm.parent.id = obj.parentId
+          this.inputForm.parentId = obj.parentId
         })
       }).then(() => {
         if (method === 'edit' || method === 'view') { // 修改或者查看

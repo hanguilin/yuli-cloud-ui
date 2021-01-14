@@ -17,7 +17,7 @@
       <el-table-column prop="title"
                        header-align="center"
                        show-overflow-tooltip
-                       align="center"
+                       align="left"
                        min-width="15%"
                        label="名称">
         <template slot-scope="scope">
@@ -90,14 +90,21 @@
       <el-table-column prop="path"
                        header-align="center"
                        align="center"
-                       min-width="15%"
+                       min-width="10%"
                        :show-overflow-tooltip="true"
                        label="菜单路由">
+      </el-table-column>
+      <el-table-column prop="url"
+                       header-align="center"
+                       align="center"
+                       min-width="10%"
+                       :show-overflow-tooltip="true"
+                       label="外链路径">
       </el-table-column>
       <el-table-column prop="permission"
                        header-align="center"
                        align="center"
-                       min-width="15%"
+                       min-width="10%"
                        :show-overflow-tooltip="true"
                        label="权限标识">
       </el-table-column>
@@ -121,7 +128,7 @@
               <el-dropdown-item :command="{method:'view', id:scope.row.id}">
                 查看
               </el-dropdown-item>
-              <el-dropdown-item :command="{method:'edit', id:scope.row.id}">
+              <el-dropdown-item :command="{method:'edit', id:scope.row.id, parentId: scope.row.parentId}">
                 修改
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'del', id:scope.row.id}">
@@ -177,25 +184,25 @@ export default {
     },
     // 新增下级
     addChild (row) {
-      this.$refs.menuForm.init('addChild', { id: '', parent: { id: row.id } })
+      this.$refs.menuForm.init('addChild', { id: '', parentId: row.id })
     },
     // 新增
     add () {
-      this.$refs.menuForm.init('add', { id: '', parent: { id: '' } })
+      this.$refs.menuForm.init('add', { id: '', parentId: '' })
     },
     // 修改
-    edit (id) {
-      this.$refs.menuForm.init('edit', { id: id, parent: { id: '' } })
+    edit (id, parentId) {
+      this.$refs.menuForm.init('edit', { id, parentId })
     },
     // 查看
     view (id) {
-      this.$refs.menuForm.init('view', { id: id, parent: { id: '' } })
+      this.$refs.menuForm.init('view', { id, parentId: '' })
     },
     handleCommand (command) {
       if (command.method === 'view') {
         this.view(command.id)
       } else if (command.method === 'edit') {
-        this.edit(command.id)
+        this.edit(command.id, command.parentId)
       } else if (command.method === 'del') {
         this.del(command.id)
       } else if (command.method === 'addChild') {

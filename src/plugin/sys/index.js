@@ -12,7 +12,6 @@ import httpRequest from '@/libs/util.request'
 // 功能插件
 import pluginError from '@/plugin/error'
 import pluginLog from '@/plugin/log'
-import pluginOpen from '@/plugin/open'
 // 工具类
 import util from '@/libs/util'
 // 表单校验扩展
@@ -45,7 +44,6 @@ export default {
     // 插件
     Vue.use(pluginError)
     Vue.use(pluginLog)
-    Vue.use(pluginOpen)
     // animated动画
     Vue.use(animated)
   }

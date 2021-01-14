@@ -7,16 +7,16 @@ import { uniqueId } from 'lodash'
 export function elMenuItem (h, menu) {
   let icon = null
   if (menu.icon) {
-    icon = <i class={ menu.icon } aria-hidden="true"></i>
+    icon = <i class={menu.icon} aria-hidden="true"></i>
   } else {
     icon = <i class="fa fa-file-o" aria-hidden="true"></i>
   }
-  const uniqueTag = menu.path || uniqueId('menu-item-')
+  const uniqueTag = menu.path || uniqueId('empty-menu-item-')
   return <el-menu-item
-    key={ uniqueTag }
-    index={ uniqueTag }>
-    { icon }
-    <span slot="title">{ menu.title || '未命名菜单' }</span>
+    key={uniqueTag}
+    index={uniqueTag}>
+    {icon}
+    <span slot="title">{menu.title || '未命名菜单'}</span>
   </el-menu-item>
 }
 
@@ -28,17 +28,17 @@ export function elMenuItem (h, menu) {
 export function elSubmenu (h, menu) {
   let icon = null
   if (menu.icon) {
-    icon = <i class={ menu.icon } aria-hidden="true" slot="title"></i>
+    icon = <i class={menu.icon} aria-hidden="true" slot="title"></i>
   } else {
     icon = <i class="fa fa-file-o" aria-hidden="true"></i>
   }
-  const uniqueTag = menu.path || uniqueId('menu-item-')
+  const uniqueTag = menu.path || uniqueId('empty-menu-item-')
   return <el-submenu
-    key={ uniqueTag }
-    index={ uniqueTag }>
-    { icon }
-    <span slot="title">{ menu.title || '未命名菜单' }</span>
-    { menu.children.map(child => createMenu.call(this, h, child)) }
+    key={uniqueTag}
+    index={uniqueTag}>
+    {icon}
+    <span slot="title">{menu.title || '未命名菜单'}</span>
+    {menu.children.map(child => createMenu.call(this, h, child))}
   </el-submenu>
 }
 
@@ -50,4 +50,19 @@ export function elSubmenu (h, menu) {
 export function createMenu (h, menu) {
   if (menu.children === undefined) return elMenuItem.call(this, h, menu)
   return elSubmenu.call(this, h, menu)
+}
+
+/**
+ * 格式化el-menu菜单
+ * @param {*} menu 菜单
+ */
+export function formatMenu (menu) {
+  return menu.map(e => {
+    return {
+      ...e,
+      ...e.children ? {
+        children: formatMenu(e.children)
+      } : {}
+    }
+  })
 }

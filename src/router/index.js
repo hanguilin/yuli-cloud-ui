@@ -7,6 +7,7 @@ import 'nprogress/nprogress.css'
 import { getMenu } from '@/api/modules/sys/index'
 import store from '@/store'
 import util from '@/libs/util'
+import { formatMenu } from '@/libs/util.menu'
 // 路由数据
 import { frameInRoutes, frameOutRoutes } from './routes'
 
@@ -55,8 +56,9 @@ router.beforeEach(async (to, from, next) => {
         const menu = res.data.data
         // 根据返回数据添加动态路由
         fnAddDynamicMenuRoutes(menu)
+        console.log('menu', menu)
         // 格式化左侧菜单数据
-        const menuAside = util.formatMenu(menu)
+        const menuAside = formatMenu(menu)
         /// 设置数据到vuex
         store.commit('sys/menu/asideSet', menuAside)
         // 设置name和meta.title属性
@@ -131,14 +133,13 @@ function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
           const componentPath = util.removePrefix('/', menuList[i].path.split('?')[0])
           route.component = _import(componentPath) || null
         } else if (menuList[i].target === '1') {
-          // 外链
-          route.path = '/' + route.path
-          route.meta.iframeUrl = menuList[i].path
-          route.meta.type = 'iframe'
+          route.meta.iframeUrl = menuList[i].url
+          route.meta.type = 'outLink'
         }
       } catch (e) {
         console.error(e)
       }
+      console.log('route', route)
       routes.push(route)
     }
   }

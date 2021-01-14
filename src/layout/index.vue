@@ -86,10 +86,9 @@
               <div class="yuli-container-main-body"
                    flex-box="1">
                 <transition :enter-active-class="transitionActive ? 'animated fadeIn' : ''">
-                  <iframe v-if="$route.meta.type === 'iframe'"
+                  <iframe v-if="$route.meta.type === 'outLink'"
                           :src="$route.meta.iframeUrl"
-                          width="100%"
-                          height="100%"
+                          class="y_iframe"
                           frameborder="0"
                           scrolling="yes"></iframe>
                   <keep-alive v-else
@@ -202,5 +201,9 @@ export default {
   img {
     height: 40px;
   }
+}
+.y_iframe {
+  width: 100%;
+  height: 100%;
 }
 </style>

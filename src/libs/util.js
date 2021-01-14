@@ -16,39 +16,6 @@ util.title = function (titleText) {
 }
 
 /**
- * @description 打开新页面
- * @param {String} url 地址
- */
-util.open = function (url) {
-  var a = document.createElement('a')
-  a.setAttribute('href', url)
-  a.setAttribute('target', '_blank')
-  a.setAttribute('id', 'd2admin-link-temp')
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(document.getElementById('d2admin-link-temp'))
-}
-
-/**
- * 格式化el-menu菜单
- * @param {*} menu 菜单
- */
-util.formatMenu = function (menu) {
-  return menu.map(e => {
-    // 类型为外链时，给路径加上/，使其被路由捕获
-    if (e.target === '1') {
-      e.path = '/' + e.path
-    }
-    return {
-      ...e,
-      ...e.children ? {
-        children: util.formatMenu(e.children)
-      } : {}
-    }
-  })
-}
-
-/**
  * 清除登录信息
  */
 util.clearLoginInfo = function () {

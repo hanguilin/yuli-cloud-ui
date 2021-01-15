@@ -1,5 +1,4 @@
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
-const VueFilenameInjector = require('@d2-projects/vue-filename-injector')
 const ThemeColorReplacer = require('webpack-theme-color-replacer')
 const forElementUI = require('webpack-theme-color-replacer/forElementUI')
 const cdnDependencies = require('./dependencies-cdn')
@@ -117,13 +116,6 @@ module.exports = {
       .when(process.env.NODE_ENV === 'development',
         config => config.devtool('cheap-source-map')
       )
-      // 预览环境构建 vue-loader 添加 filename
-      .when(
-        process.env.VUE_APP_SCOURCE_LINK === 'TRUE',
-        config => VueFilenameInjector(config, {
-          propName: process.env.VUE_APP_SOURCE_VIEWER_PROP_NAME
-        })
-      )
     // markdown
     config.module
       .rule('md')
@@ -141,7 +133,7 @@ module.exports = {
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
       .options({
-        symbolId: 'd2-[name]'
+        symbolId: 'yuli-[name]'
       })
       .end()
     // image exclude

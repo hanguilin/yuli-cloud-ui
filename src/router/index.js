@@ -45,7 +45,6 @@ router.beforeEach(async (to, from, next) => {
   NProgress.start()
   // 关闭搜索面板
   store.commit('sys/search/set', false)
-  console.log(to.path, fnCurrentRouteType(to, frameOutRoutes))
   // 框架外部路由或由接口提供的动态路由则直接放行，不查询菜单
   if (fnCurrentRouteType(to, frameOutRoutes) === 'frameOut' || router.options.isAddDynamicMenuRoutes) {
     next()
@@ -143,7 +142,6 @@ function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
       } catch (e) {
         console.error(e)
       }
-      console.log('route', route)
       routes.push(route)
     }
   }

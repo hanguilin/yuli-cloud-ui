@@ -1,6 +1,6 @@
 import layout from '@/layout/index.vue'
-import util from '@/libs/util'
-import cookies from '@/libs/util.cookies'
+// import util from '@/libs/util'
+// import cookies from '@/libs/util.cookies'
 
 // 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
 const _import = require('./import-' + process.env.NODE_ENV)
@@ -60,11 +60,11 @@ const frameIn = {
     }
   ],
   beforeEnter (to, from, next) {
-    const token = cookies.get('token')
-    if (!token || !/\S/.test(token)) {
-      util.clearLoginInfo()
-      next({ name: 'login' })
-    }
+    // const token = cookies.get('token')
+    // if (!token || !/\S/.test(token)) {
+    //   util.clearLoginInfo()
+    //   next({ name: 'login' })
+    // }
     next()
   }
 }

@@ -209,7 +209,6 @@ export default {
           ...this.$util.filterParams(this.searchForm)
         }
       }).then(({ data }) => {
-        console.log(data)
         if (data && data.code === 200) {
           this.dataList = data.data.records
           this.total = data.data.total

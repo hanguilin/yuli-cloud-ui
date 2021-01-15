@@ -2,95 +2,96 @@
   <div class="page-login">
     <div class="page-login--layer page-login--layer-area">
       <ul class="circles">
-        <li v-for="n in 10" :key="n"></li>
+        <li v-for="n in 10"
+            :key="n"></li>
       </ul>
     </div>
-    <div
-      class="page-login--layer page-login--layer-time"
-      flex="main:center cross:center">
+    <div class="page-login--layer page-login--layer-time"
+         flex="main:center cross:center">
       {{time}}
     </div>
     <div class="page-login--layer">
-      <div
-        class="page-login--content"
-        flex="dir:top main:justify cross:stretch box:justify">
+      <div class="page-login--content"
+           flex="dir:top main:justify cross:stretch box:justify">
         <div class="page-login--content-header"></div>
-        <transition name="slide" 
-					appear
-					enter-active-class="animate__animated animate__fast animate__slideInDown"
-					leave-active-class="animate__animated animate__fast animate__bounceOut"
-					appear-active-class="animate__animated animate__fast animate__slideInDown">
-        <div
-          class="page-login--content-main"
-          flex="dir:top main:center cross:center">
-          <!-- logo -->
-          <div class="product-info">
-            <div class="logo"><img src="/image/logo.png" alt=""></div>
-            <div class="product">YULI CLOUD</div>
+        <transition name="slide"
+                    appear
+                    enter-active-class="animate__animated animate__fast animate__slideInDown"
+                    leave-active-class="animate__animated animate__fast animate__bounceOut"
+                    appear-active-class="animate__animated animate__fast animate__slideInDown">
+          <div class="page-login--content-main"
+               flex="dir:top main:center cross:center">
+            <!-- logo -->
+            <div class="product-info">
+              <div class="logo"><img src="/image/logo.png"
+                     alt=""></div>
+              <div class="product">YULI CLOUD</div>
+            </div>
+            <!-- form -->
+            <div class="page-login--form">
+              <el-card shadow="never">
+                <el-form ref="loginForm"
+                         label-position="top"
+                         :rules="rules"
+                         :model="formLogin"
+                         size="default">
+                  <el-form-item prop="username">
+                    <el-input type="text"
+                              v-model="formLogin.username"
+                              placeholder="用户名">
+                      <i slot="prepend"
+                         class="fa fa-user-circle-o"></i>
+                    </el-input>
+                  </el-form-item>
+                  <el-form-item prop="password">
+                    <el-input type="password"
+                              v-model="formLogin.password"
+                              placeholder="密码">
+                      <i slot="prepend"
+                         class="fa fa-keyboard-o"></i>
+                    </el-input>
+                  </el-form-item>
+                  <el-form-item prop="code">
+                    <el-input type="text"
+                              v-model="formLogin.code"
+                              placeholder="验证码">
+                      <template slot="append">
+                        <img class="login-code"
+                             src="./image/login-code.png">
+                      </template>
+                    </el-input>
+                  </el-form-item>
+                  <el-button size="default"
+                             @click="submit"
+                             type="primary"
+                             class="button-login">
+                    登录
+                  </el-button>
+                </el-form>
+              </el-card>
+              <p class="page-login--options"
+                 flex="main:justify cross:center">
+                <span><i class="fa fa-question-circle"
+                     aria-hidden="true"></i>忘记密码</span>
+                <span>注册用户</span>
+              </p>
+              <!-- quick login -->
+              <el-button class="page-login--quick"
+                         size="default"
+                         type="info"
+                         @click="dialogVisible = true">
+                快速选择用户（测试功能）
+              </el-button>
+            </div>
           </div>
-          <!-- form -->
-          <div class="page-login--form">
-            <el-card shadow="never">
-              <el-form
-                ref="loginForm"
-                label-position="top"
-                :rules="rules"
-                :model="formLogin"
-                size="default">
-                <el-form-item prop="username">
-                  <el-input
-                    type="text"
-                    v-model="formLogin.username"
-                    placeholder="用户名">
-                    <i slot="prepend" class="fa fa-user-circle-o"></i>
-                  </el-input>
-                </el-form-item>
-                <el-form-item prop="password">
-                  <el-input
-                    type="password"
-                    v-model="formLogin.password"
-                    placeholder="密码">
-                    <i slot="prepend" class="fa fa-keyboard-o"></i>
-                  </el-input>
-                </el-form-item>
-                <el-form-item prop="code">
-                  <el-input
-                    type="text"
-                    v-model="formLogin.code"
-                    placeholder="验证码">
-                    <template slot="append">
-                      <img class="login-code" src="./image/login-code.png">
-                    </template>
-                  </el-input>
-                </el-form-item>
-                <el-button
-                  size="default"
-                  @click="submit"
-                  type="primary"
-                  class="button-login">
-                  登录
-                </el-button>
-              </el-form>
-            </el-card>
-            <p
-              class="page-login--options"
-              flex="main:justify cross:center">
-              <span><i class="fa fa-question-circle" aria-hidden="true"></i>忘记密码</span>
-              <span>注册用户</span>
-            </p>
-            <!-- quick login -->
-            <el-button class="page-login--quick" size="default" type="info" @click="dialogVisible = true">
-              快速选择用户（测试功能）
-            </el-button>
-          </div>
-        </div>
-                  </transition>
+        </transition>
         <div class="page-login--content-footer">
           <p class="page-login--content-footer-locales"></p>
           <p class="page-login--content-footer-copyright">
             Copyright
-            <i class="fa fa-copyright" aria-hidden="true"></i>
-            2018 D2 Projects 开源组织出品
+            <i class="fa fa-copyright"
+               aria-hidden="true"></i>
+            2020 YULI_CLOUD 开源组织出品
             <a href="https://github.com/FairyEver">
               @FairyEver
             </a>
@@ -103,14 +104,18 @@
         </div>
       </div>
     </div>
-    <el-dialog
-      title="快速选择用户"
-      :visible.sync="dialogVisible"
-      width="400px">
-      <el-row :gutter="10" style="margin: -20px 0px -10px 0px;">
-        <el-col v-for="(user, index) in users" :key="index" :span="8">
-          <div class="page-login--quick-user" @click="handleUserBtnClick(user)">
-            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+    <el-dialog title="快速选择用户"
+               :visible.sync="dialogVisible"
+               width="400px">
+      <el-row :gutter="10"
+              style="margin: -20px 0px -10px 0px;">
+        <el-col v-for="(user, index) in users"
+                :key="index"
+                :span="8">
+          <div class="page-login--quick-user"
+               @click="handleUserBtnClick(user)">
+            <i class="fa fa-user-circle-o"
+               aria-hidden="true"></i>
             <span>{{user.name}}</span>
           </div>
         </el-col>
@@ -232,7 +237,7 @@ export default {
 <style lang="scss">
 .page-login {
   @extend %unable-select;
-  $backgroundColor: #F0F2F5;
+  $backgroundColor: #f0f2f5;
   // ---
   background-color: $backgroundColor;
   height: 100%;
@@ -339,7 +344,7 @@ export default {
       color: $color-text-normal;
       a {
         color: $color-text-normal;
-        margin: 0 .5em;
+        margin: 0 0.5em;
         &:hover {
           color: $color-text-main;
         }
@@ -385,16 +390,16 @@ export default {
       list-style: none;
       width: 20px;
       height: 20px;
-      background: #FFF;
+      background: #fff;
       animation: animate 25s linear infinite;
       bottom: -200px;
       @keyframes animate {
-        0%{
+        0% {
           transform: translateY(0) rotate(0deg);
           opacity: 1;
           border-radius: 0;
         }
-        100%{
+        100% {
           transform: translateY(-1000px) rotate(720deg);
           opacity: 0;
           border-radius: 50%;

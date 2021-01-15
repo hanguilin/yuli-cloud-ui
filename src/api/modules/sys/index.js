@@ -9,7 +9,7 @@ export function sysLogin ({ username, password }) {
 }
 
 export function refreshToken ({ token }) {
-  return request.post('/auth/oauth/token', { refresh_token: token, grant_type: 'refresh_token', scope, client_id, client_secret })
+  return request({ url: '/auth/oauth/token', method: 'post', params: { refresh_token: token, grant_type: 'refresh_token', scope, client_id, client_secret } })
 }
 
 export function logoutRequest () {

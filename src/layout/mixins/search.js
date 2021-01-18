@@ -1,10 +1,10 @@
 import { mapState, mapMutations } from 'vuex'
 
 import hotkeys from 'hotkeys-js'
-
+import PanelSearch from '@/layout/components/panel-search'
 export default {
   components: {
-    'd2-panel-search': () => import('../components/panel-search')
+    PanelSearch
   },
   mounted () {
     // 绑定搜索功能快捷键 [ 打开 ]

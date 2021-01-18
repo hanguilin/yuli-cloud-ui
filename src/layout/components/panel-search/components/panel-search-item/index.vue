@@ -1,19 +1,33 @@
 <template>
-  <div class="d2-panel-search-item" :class="hoverMode ? 'can-hover' : ''" flex>
-    <div class="d2-panel-search-item__icon" flex-box="0">
-      <div class="d2-panel-search-item__icon-box" flex="main:center cross:center">
-        <i v-if="item.icon" :class="`fa fa-${item.icon}`" aria-hidden="true"></i>
-        <i v-else class="fa fa-file-o" aria-hidden="true"></i>
+  <div class="panel-search-item"
+       :class="hoverMode ? 'can-hover' : ''"
+       flex>
+    <div class="panel-search-item__icon"
+         flex-box="0">
+      <div class="panel-search-item__icon-box"
+           flex="main:center cross:center">
+        <i v-if="item.icon"
+           :class="`fa fa-${item.icon}`"
+           aria-hidden="true"></i>
+        <i v-else
+           class="fa fa-file-o"
+           aria-hidden="true"></i>
       </div>
     </div>
-    <div class="d2-panel-search-item__info" flex-box="1" flex="dir:top">
-      <div class="d2-panel-search-item__info-title" flex-box="1" flex="cross:center">
+    <div class="panel-search-item__info"
+         flex-box="1"
+         flex="dir:top">
+      <div class="panel-search-item__info-title"
+           flex-box="1"
+           flex="cross:center">
         <span>{{item.title}}</span>
       </div>
-      <div class="d2-panel-search-item__info-fullTitle" flex-box="0">
+      <div class="panel-search-item__info-fullTitle"
+           flex-box="0">
         <span>{{item.fullTitle}}</span>
       </div>
-      <div class="d2-panel-search-item__info-path" flex-box="0">
+      <div class="panel-search-item__info-path"
+           flex-box="0">
         <span>{{item.path}}</span>
       </div>
     </div>
@@ -34,38 +48,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.d2-panel-search-item {
+.panel-search-item {
   height: 64px;
   margin: 0px -20px;
   &.can-hover {
     @extend %unable-select;
     margin: 0px;
     &:hover {
-      background-color: #F5F7FA;
-      .d2-panel-search-item__icon {
-        .d2-panel-search-item__icon-box {
+      background-color: #f5f7fa;
+      .panel-search-item__icon {
+        .panel-search-item__icon-box {
           i {
             font-size: 24px;
             color: $color-primary;
           }
         }
       }
-      .d2-panel-search-item__info {
-        .d2-panel-search-item__info-title {
+      .panel-search-item__info {
+        .panel-search-item__info-title {
           color: $color-text-main;
         }
-        .d2-panel-search-item__info-fullTitle {
+        .panel-search-item__info-fullTitle {
           color: $color-text-normal;
         }
-        .d2-panel-search-item__info-path {
+        .panel-search-item__info-path {
           color: $color-text-normal;
         }
       }
     }
   }
-  .d2-panel-search-item__icon {
+  .panel-search-item__icon {
     width: 64px;
-    .d2-panel-search-item__icon-box {
+    .panel-search-item__icon-box {
       height: 64px;
       width: 64px;
       border-right: 1px solid $color-border-3;
@@ -79,20 +93,20 @@ export default {
       }
     }
   }
-  .d2-panel-search-item__info {
+  .panel-search-item__info {
     margin-left: 10px;
-    .d2-panel-search-item__info-title {
+    .panel-search-item__info-title {
       font-size: 16px;
       line-height: 16px;
       font-weight: bold;
       color: $color-text-normal;
     }
-    .d2-panel-search-item__info-fullTitle {
+    .panel-search-item__info-fullTitle {
       font-size: 10px;
       line-height: 14px;
       color: $color-text-placehoder;
     }
-    .d2-panel-search-item__info-path {
+    .panel-search-item__info-path {
       margin-bottom: 4px;
       font-size: 10px;
       line-height: 14px;

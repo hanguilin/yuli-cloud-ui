@@ -42,15 +42,6 @@
     }
   }
 
-  .el-card {
-    &.d2-card {
-      border: $theme-container-border-outer;
-      .el-card__header {
-        border-bottom: $theme-container-border-outer;
-      }
-    }
-  }
-
   // 背景图片和遮罩
   .yuli-layout-header-aside-group {
     background-color: $theme-bg-color;
@@ -184,7 +175,7 @@
       }
     }
     // 顶栏右侧
-    .d2-header-right {
+    .header-right {
       .btn-text {
         color: $theme-header-item-color;
         &.can-hover {

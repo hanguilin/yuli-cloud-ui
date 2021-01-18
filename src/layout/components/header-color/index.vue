@@ -1,17 +1,16 @@
 <template>
-  <el-color-picker
-    class="btn-text can-hover"
-    :value="value"
-    :predefine="predefine"
-    size="mini"
-    @change="set"/>
+  <el-color-picker class="btn-text can-hover"
+                   :value="value"
+                   :predefine="predefine"
+                   size="mini"
+                   @change="set" />
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 
 export default {
-  name: 'd2-header-color',
+  name: 'header-color',
   data () {
     return {
       predefine: [

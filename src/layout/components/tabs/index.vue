@@ -1,51 +1,55 @@
 <template>
-  <div class="yuli-multiple-page-control-group" flex>
-    <div class="yuli-multiple-page-control-content" flex-box="1">
+  <div class="yuli-multiple-page-control-group"
+       flex>
+    <div class="yuli-multiple-page-control-content"
+         flex-box="1">
       <div class="yuli-multiple-page-control-content-inner">
-        <d2-contextmenu
-          :visible.sync="contextmenuFlag"
-          :x="contentmenuX"
-          :y="contentmenuY">
-          <d2-contextmenu-list
-            :menulist="tagName === '/index' ? contextmenuListIndex : contextmenuList"
-            @rowClick="contextmenuClick"/>
-        </d2-contextmenu>
-        <el-tabs
-          type="card"
-          class="yuli-multiple-page-control yuli-multiple-page-sort"
-          :value="current"
-          @tab-click="handleClick"
-          @tab-remove="handleTabRemove"
-          @contextmenu.native="handleContextmenu">
-          <el-tab-pane
-            v-for="page in opened"
-            :key="page.fullPath"
-            :label="page.meta.title || '未命名'"
-            :name="page.fullPath"
-            :closable="isTabClosable(page)"/>
+        <contextmenu :visible.sync="contextmenuFlag"
+                     :x="contentmenuX"
+                     :y="contentmenuY">
+          <contextmenu-list :menulist="tagName === '/index' ? contextmenuListIndex : contextmenuList"
+                            @rowClick="contextmenuClick" />
+        </contextmenu>
+        <el-tabs type="card"
+                 class="yuli-multiple-page-control yuli-multiple-page-sort"
+                 :value="current"
+                 @tab-click="handleClick"
+                 @tab-remove="handleTabRemove"
+                 @contextmenu.native="handleContextmenu">
+          <el-tab-pane v-for="page in opened"
+                       :key="page.fullPath"
+                       :label="page.meta.title || '未命名'"
+                       :name="page.fullPath"
+                       :closable="isTabClosable(page)" />
         </el-tabs>
       </div>
     </div>
-    <div class="yuli-multiple-page-control-btn" flex-box="0">
+    <div class="yuli-multiple-page-control-btn"
+         flex-box="0">
       <el-dropdown @command="command => handleControlItemClick(command)">
-        <el-button type="primary" size="mini">
+        <el-button type="primary"
+                   size="mini">
           更多菜单<i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="left">
-            <i class="fa fa-arrow-left d2-mr-10" aria-hidden="true"></i>
+            <i class="fa fa-arrow-left d2-mr-10"
+               aria-hidden="true"></i>
             关闭左侧
           </el-dropdown-item>
           <el-dropdown-item command="right">
-            <i class="fa fa-arrow-right d2-mr-10" aria-hidden="true"></i>
+            <i class="fa fa-arrow-right d2-mr-10"
+               aria-hidden="true"></i>
             关闭右侧
           </el-dropdown-item>
           <el-dropdown-item command="other">
-            <i class="fa fa-times de-mr-10" aria-hidden="true"></i>
+            <i class="fa fa-times de-mr-10"
+               aria-hidden="true"></i>
             关闭其它
           </el-dropdown-item>
           <el-dropdown-item command="all">
-            <i class="fa fa-times-circle d2-mr-10" aria-hidden="true"></i>
+            <i class="fa fa-times-circle d2-mr-10"
+               aria-hidden="true"></i>
             全部关闭
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -57,12 +61,9 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import Sortable from 'sortablejs'
-
+import Contextmenu from '@/layout/components/contextmenu'
+import ContextmenuList from '@/layout/components/contextmenu/list'
 export default {
-  components: {
-    D2Contextmenu: () => import('../contextmenu'),
-    D2ContextmenuList: () => import('../contextmenu/components/contentmenuList')
-  },
   data () {
     return {
       contextmenuFlag: false,
@@ -80,6 +81,10 @@ export default {
       ],
       tagName: '/index'
     }
+  },
+  components: {
+    Contextmenu,
+    ContextmenuList
   },
   computed: {
     ...mapState('sys/page', [
@@ -182,7 +187,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-::v-deep .el-tabs--card>.el-tabs__header {
+::v-deep .el-tabs--card > .el-tabs__header {
   border-bottom: none;
   overflow: hidden;
 }

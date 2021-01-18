@@ -1,12 +1,14 @@
 <template>
-  <div class="d2-contextmenu" v-show="flag" :style="style">
-    <slot/>
+  <div class="contextmenu"
+       v-show="flag"
+       :style="style">
+    <slot />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'd2-contextmenu',
+  name: 'contextmenu',
   props: {
     visible: {
       type: Boolean,
@@ -56,13 +58,13 @@ export default {
 </script>
 
 <style>
-.d2-contextmenu {
+.contextmenu {
   position: absolute;
   padding: 5px 0;
   z-index: 2018;
-  background: #FFF;
+  background: #fff;
   border: 1px solid #cfd7e5;
   border-radius: 4px;
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 </style>

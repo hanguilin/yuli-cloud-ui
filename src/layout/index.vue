@@ -33,7 +33,7 @@
         <!-- 头部菜单栏 -->
         <menu-header flex-box="1" />
         <!-- 顶栏右侧 -->
-        <div class="d2-header-right"
+        <div class="header-right"
              flex-box="0">
           <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
           <header-search @click="handleSearchClick" />

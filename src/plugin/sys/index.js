@@ -18,6 +18,8 @@ import util from '@/libs/util'
 import validator from '@/libs/validator'
 // 自定义指令
 import '@/directive'
+// 打字机效果
+import VueTypedJs from 'vue-typed-js'
 
 export default {
   async install (Vue, options) {
@@ -48,5 +50,7 @@ export default {
     Vue.use(pluginLog)
     // animated动画
     Vue.use(animated)
+    // 打字机效果
+    Vue.use(VueTypedJs)
   }
 }

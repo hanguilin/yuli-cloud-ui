@@ -193,6 +193,7 @@ export default {
         if (method === 'edit' || method === 'view') { // 修改或者查看
           this.$http.get(`/sys/menu/info/${this.inputForm.id}`).then(({ data }) => {
             this.inputForm = this.$util.recover(this.inputForm, data.data)
+            console.log(this.inputForm)
           })
         }
       })

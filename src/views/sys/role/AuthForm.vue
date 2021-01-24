@@ -124,6 +124,11 @@ export default {
               this.$message.success(data.msg)
               this.visible = false
               this.$emit('refreshDataList')
+              this.$notify({
+                type: 'info',
+                title: '提示',
+                message: '授权后需要重新登录账号'
+              })
             }
             this.loading = false
           })

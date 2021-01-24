@@ -1,68 +1,62 @@
 <template>
   <div>
-    <el-table
-      :data="log"
-      size="mini"
-      style="width: 100%"
-      empty-text="暂无日志信息"
-      stripe>
+    <el-table class="table"
+              :data="log"
+              size="mini"
+              style="width: 100%"
+              empty-text="暂无日志信息"
+              stripe>
       <!-- 时间 -->
-      <el-table-column
-        prop="time"
-        label="Time"
-        width="140">
+      <el-table-column prop="time"
+                       label="Time"
+                       width="140">
       </el-table-column>
       <!-- 信息 -->
-      <el-table-column
-        prop="message"
-        label="Message">
+      <el-table-column prop="message"
+                       label="Message">
       </el-table-column>
       <!-- 触发页面 -->
-      <el-table-column
-        label="Url"
-        align="center"
-        min-width="200">
+      <el-table-column label="Url"
+                       align="center"
+                       min-width="200">
         <template slot-scope="scope">
           {{get(scope.row, 'meta.url')}}
         </template>
       </el-table-column>
       <!-- 触发组件 -->
-      <el-table-column
-        label="Tag"
-        align="center"
-        min-width="120">
+      <el-table-column label="Tag"
+                       align="center"
+                       min-width="120">
         <template slot-scope="scope">
-          <el-tag
-            v-if="get(scope.row, 'meta.instance.$vnode.componentOptions.tag')"
-            type="info"
-            size="mini">
+          <el-tag v-if="get(scope.row, 'meta.instance.$vnode.componentOptions.tag')"
+                  type="info"
+                  size="mini">
             &#60;{{get(scope.row, 'meta.instance.$vnode.componentOptions.tag')}}&gt;
           </el-tag>
         </template>
       </el-table-column>
       <!-- 查看详情 -->
-      <el-table-column
-        fixed="right"
-        align="center"
-        label="More"
-        width="100">
+      <el-table-column fixed="right"
+                       align="center"
+                       label="More"
+                       width="100">
         <template slot-scope="scope">
-          <el-button
-            type="primary"
-            size="mini"
-            @click="handleShowMore(scope.row)">
-            <i class="fa fa-eye" aria-hidden="true"></i>
+          <el-button type="primary"
+                     size="mini"
+                     @click="handleShowMore(scope.row)">
+            <i class="fa fa-eye"
+               aria-hidden="true"></i>
           </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-button
-      slot="footer"
-      type="primary"
-      size="mini"
-      :loading="uploading"
-      @click="handleUpload">
-      <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+    <el-button slot="footer"
+               type="primary"
+               size="mini"
+               :loading="uploading"
+               @click="handleUpload">
+      <i class="fa fa-cloud-upload"
+         aria-hidden="true"></i>
       Upload {{log.length}} log data
     </el-button>
   </div>

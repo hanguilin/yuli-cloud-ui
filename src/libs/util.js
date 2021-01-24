@@ -127,4 +127,30 @@ function isEmpty (obj) {
   return (emptyArr.indexOf(obj) > -1 || obj.toString().trim() === '')
 }
 
+/**
+ * 下载后台返回数据
+ * @param {*} res axios返回response
+ */
+util.download = function (res) {
+  const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' })
+  const downloadElement = document.createElement('a')
+  const href = window.URL.createObjectURL(blob)
+  // 从response的headers中获取filename, 后端response.setHeader("Content-disposition", "attachment; filename=xxxx.docx") 设置的文件名;
+  const contentDisposition = res.headers['content-disposition']
+  const patt = new RegExp('filename=([^;]+\\.[^\\.;]+);*')
+  const result = patt.exec(contentDisposition)
+  const filename = decodeURI(result[1])
+  downloadElement.style.display = 'none'
+  downloadElement.href = href
+  // 下载后文件名
+  downloadElement.download = filename
+  document.body.appendChild(downloadElement)
+  // 点击下载
+  downloadElement.click()
+  // 下载完成移除元素
+  document.body.removeChild(downloadElement)
+  // 释放掉blob对象
+  window.URL.revokeObjectURL(href)
+}
+
 export default util

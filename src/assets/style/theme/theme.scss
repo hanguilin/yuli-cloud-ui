@@ -1,8 +1,8 @@
 // 每个主题特有的设置
 .theme-#{$theme-name} {
   // 表格间距
-  .table, .el-pagination {
-    margin-top: 10px;
+  .table {
+    margin: 10px 0;
   }
   // dialog居中
   .el-dialog {

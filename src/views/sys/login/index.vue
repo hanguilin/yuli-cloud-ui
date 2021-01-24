@@ -56,7 +56,8 @@
                  class="fa fa-keyboard-o"></i>
             </el-input>
           </el-form-item>
-          <el-button size="default"
+          <el-button v-noMoreClick="3000"
+                     size="default"
                      @click="submit"
                      type="primary"
                      class="login-button">

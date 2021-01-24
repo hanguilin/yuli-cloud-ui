@@ -9,7 +9,6 @@ import store from '@/store'
 import util from '@/libs/util'
 // 路由数据
 import { frameInRoutes, frameOutRoutes } from './routes'
-import { hasPermission } from '@/libs/util.permission'
 
 // 开发环境不使用懒加载
 const _import = require('./import-' + process.env.NODE_ENV)
@@ -40,7 +39,6 @@ const router = new VueRouter({
  * 权限验证
  */
 router.beforeEach(async (to, from, next) => {
-  hasPermission()
   // 进度条
   NProgress.start()
   // 关闭搜索面板

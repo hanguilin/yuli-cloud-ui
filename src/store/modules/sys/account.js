@@ -18,14 +18,14 @@ export default {
       username = '',
       password = ''
     } = {}) {
-      await sysLogin({ username, password }).then(({ data }) => {
-        if (data && data.code === 200) {
-          const res = data.data
-          cookies.set('userId', res.user_id)
-          cookies.set('token', res.access_token)
-          cookies.set('refreshToken', res.refresh_token)
+      await sysLogin({ username, password }).then((res) => {
+        if (res.status === 200) {
+          const data = res.data
+          cookies.set('userId', data.user_id)
+          cookies.set('token', data.access_token)
+          cookies.set('refreshToken', data.refresh_token)
           // 设置 vuex 用户信息
-          dispatch('sys/user/set', { name: res.nickname }, { root: true })
+          dispatch('sys/user/set', { name: data.nickname }, { root: true })
           // 获取菜单
           // getMenu()
           dispatch('load')

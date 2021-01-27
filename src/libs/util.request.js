@@ -2,7 +2,7 @@ import axios from 'axios'
 import merge from 'lodash/merge'
 import store from '@/store'
 import cookies from '@/libs/util.cookies'
-import { refreshToken } from '@/api/modules/sys'
+import { refreshToken, params } from '@/api/modules/sys'
 import qs from 'qs'
 import {
   Message,
@@ -23,6 +23,9 @@ axios.BASE_URL = BASE_URL
 
 // token刷新时等待重试队列
 let requests = []
+
+// response 不拦截提示，主要用于非常规的返回数据格式
+let notAutoTips = [params.login_url].map(e => BASE_URL + e)
 
 /**
  * 请求拦截
@@ -52,7 +55,7 @@ axios.interceptors.response.use(response => {
   if (loading) {
     loading.close()
   }
-  if (response.data && response.data.code !== 200) {
+  if (notAutoTips.indexOf(response.config.url) === -1 && response.data && response.data.code !== 200) {
     Message({
       message: response.data.msg,
       type: 'error',
@@ -83,7 +86,7 @@ axios.interceptors.response.use(response => {
           duration: 3000
         })
         // refreshToken
-        const res = await refreshToken({ token: cookies.get('refreshToken') }).then(({ data }) => { if (data && data.code === 200) { return data.data } })
+        const res = await refreshToken({ token: cookies.get('refreshToken') }).then((res) => { if (res.status === 200) { return res.data } })
         if (!res) {
           // 续签失败逻辑
           Notification({

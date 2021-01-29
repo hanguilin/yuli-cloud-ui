@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <el-form :inline="true"
              v-show="isSearchCollapse"
              class="query-form"
@@ -7,7 +8,12 @@
              :model="searchForm"
              @keyup.enter.native="refreshList()"
              @submit.native.prevent>
-
+      <el-form-item prop="type">
+        <el-input size="small"
+                  v-model="searchForm.type"
+                  placeholder="类型"
+                  clearable></el-input>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary"
                    @click="refreshList()"
@@ -17,23 +23,20 @@
       </el-form-item>
     </el-form>
     <el-row>
-      <el-button v-if="hasPermission('generator:genDatasourceConf:save')"
-                 type="primary"
+      <el-button type="primary"
                  size="small"
                  icon="el-icon-plus"
                  @click="add()">新建</el-button>
-      <el-button v-if="hasPermission('generator:genDatasourceConf:update')"
-                 type="warning"
+      <el-button type="warning"
                  size="small"
                  icon="el-icon-edit-outline"
-                 @click="update()"
+                 @click="edit()"
                  :disabled="dataListSelections.length !== 1"
                  plain>修改</el-button>
-      <el-button v-if="hasPermission('generator:genDatasourceConf:delete')"
-                 type="danger"
+      <el-button type="danger"
                  size="small"
                  icon="el-icon-delete"
-                 @click="del"
+                 @click="del()"
                  :disabled="dataListSelections.length <= 0"
                  plain>删除
       </el-button>
@@ -65,26 +68,24 @@
               border
               size="medium"
               @selection-change="selectionChangeHandle"
+              @sort-change="sortChangeHandle"
               class="table">
       <el-table-column type="selection"
                        header-align="center"
                        align="center"
                        width="50">
       </el-table-column>
-      <el-table-column prop="name"
-                       label="名称">
-      </el-table-column>
-      <el-table-column prop="username"
-                       label="用户名">
-      </el-table-column>
-      <el-table-column prop="password"
-                       label="密码">
-        <template>
-          ******
+      <el-table-column prop="type"
+                       sortable="custom"
+                       label="类型">
+        <template slot-scope="scope">
+          <el-link type="primary"
+                   :underline="false"
+                   @click="edit(scope.row.id)">{{scope.row.type}}</el-link>
         </template>
       </el-table-column>
       <el-table-column prop="remark"
-                       label="备注">
+                       label="描述">
       </el-table-column>
       <el-table-column fixed="right"
                        header-align="center"
@@ -92,23 +93,26 @@
                        width="250"
                        label="操作">
         <template slot-scope="scope">
-          <el-button v-if="hasPermission('generator:genDatasourceConf:info')"
-                     type="text"
+          <el-button type="text"
                      size="small"
-                     @click="info(scope.row.id)">查看
+                     @click="view(scope.row.id)">查看
           </el-button>
           <el-divider direction="vertical"></el-divider>
-          <el-button v-if="hasPermission('generator:genDatasourceConf:update')"
-                     type="text"
+          <el-button type="text"
                      size="small"
-                     @click="update(scope.row.id)">修改
+                     @click="edit(scope.row.id)">修改
           </el-button>
           <el-divider direction="vertical"></el-divider>
-          <el-button v-if="hasPermission('generator:genDatasourceConf:delete')"
-                     type="text"
+          <el-button type="text"
                      size="small"
                      @click="del(scope.row.id)">
             删除
+          </el-button>
+          <el-divider direction="vertical"></el-divider>
+          <el-button type="text"
+                     size="small"
+                     @click="showRight(scope.row)">
+            管理键值
           </el-button>
         </template>
       </el-table-column>
@@ -123,20 +127,30 @@
                    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
-    <!-- 增、改、查 -->
-    <GenDatasourceConfForm ref="genDatasourceConfForm"
-                           @refreshDataList="refreshList"></GenDatasourceConfForm>
+    <!-- 弹窗, 新增 / 修改 -->
+    <dict-type-form ref="dictTypeForm"
+                    @refreshDataList="refreshList"></dict-type-form>
+    <el-drawer size="700px"
+               :title="`数据字典值列表，所属类型: ${dictTypeTitle}`"
+               :visible.sync="rightVisible"
+               direction="rtl">
+      <dict-value-list :dict-type-title="dictTypeTitle"
+                       ref="dictValueList"
+                       @closeRight="closeRight"></dict-value-list>
+    </el-drawer>
 
   </div>
 </template>
 
 <script>
-import GenDatasourceConfForm from './GenDatasourceConfForm'
+import DictTypeForm from './DictTypeForm'
+import DictValueList from '../value/DictValueList'
 
 export default {
   data () {
     return {
       searchForm: {
+        type: ''
       },
       dataList: [],
       current: 1,
@@ -145,11 +159,14 @@ export default {
       orderBy: '',
       dataListSelections: [],
       isSearchCollapse: false,
+      dictTypeTitle: '',
+      rightVisible: false,
       loading: false
     }
   },
   components: {
-    GenDatasourceConfForm
+    DictTypeForm,
+    DictValueList
   },
   activated () { },
   mounted () {
@@ -159,10 +176,12 @@ export default {
     // 获取数据列表
     refreshList () {
       this.loading = true
-      this.$http.get('/codegen/genDatasourceConf/page', {
+      this.$http.get('/sys/dict/type/page', {
         params: {
           current: this.current,
-          size: this.size
+          size: this.size,
+          type: this.searchForm.type,
+          orderBy: this.orderBy
         }
       }).then(({ data }) => {
         if (data && data.code === 200) {
@@ -187,20 +206,31 @@ export default {
     selectionChangeHandle (val) {
       this.dataListSelections = val
     },
+    // 排序
+    sortChangeHandle (obj) {
+      if (obj.order === 'ascending') {
+        this.orderBy = obj.prop + ' asc'
+      } else if (obj.order === 'descending') {
+        this.orderBy = obj.prop + ' desc'
+      } else {
+        this.orderBy = ''
+      }
+      this.refreshList()
+    },
     // 新增
     add () {
-      this.$refs.genDatasourceConfForm.init('save', '')
+      this.$refs.dictTypeForm.init('add', '')
     },
     // 修改
-    update (id) {
+    edit (id) {
       id = id || this.dataListSelections.map(item => {
         return item.id
       })[0]
-      this.$refs.genDatasourceConfForm.init('update', id)
+      this.$refs.dictTypeForm.init('edit', id)
     },
     // 查看
-    info (id) {
-      this.$refs.genDatasourceConfForm.init('info', id)
+    view (id) {
+      this.$refs.dictTypeForm.init('view', id)
     },
     // 删除
     del (id) {
@@ -212,7 +242,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$http.delete('/codegen/genDatasourceConf/delete', { params: { ids } }).then(({ data }) => {
+        this.$http.delete('/sys/dict/type/delete', { params: { ids } }).then(({ data }) => {
           if (data && data.code === 200) {
             this.$message.success(data.msg)
             this.refreshList()
@@ -223,6 +253,16 @@ export default {
     resetSearch () {
       this.$refs.searchForm.resetFields()
       this.refreshList()
+    },
+    showRight (row) {
+      this.rightVisible = true
+      this.$nextTick(() => {
+        this.$refs.dictValueList.refreshList(row.id)
+        this.dictTypeTitle = row.type
+      })
+    },
+    closeRight () {
+      this.rightVisible = false
     }
   }
 }

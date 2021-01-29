@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <el-form :inline="true"
              v-show="isSearchCollapse"
              class="query-form"
@@ -8,11 +7,15 @@
              :model="searchForm"
              @keyup.enter.native="refreshList()"
              @submit.native.prevent>
-      <el-form-item prop="type">
+      <el-form-item prop="jobName">
         <el-input size="small"
-                  v-model="searchForm.type"
-                  placeholder="类型"
-                  clearable></el-input>
+                  v-model="searchForm.jobName"
+                  placeholder="请输入任务名"></el-input>
+      </el-form-item>
+      <el-form-item prop="jobGroup">
+        <el-input size="small"
+                  v-model="searchForm.jobGroup"
+                  placeholder="请输入任务组"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary"
@@ -23,20 +26,23 @@
       </el-form-item>
     </el-form>
     <el-row>
-      <el-button type="primary"
+      <el-button v-if="hasPermission('quartz:sysQuartzJob:save')"
+                 type="primary"
                  size="small"
                  icon="el-icon-plus"
                  @click="add()">新建</el-button>
-      <el-button type="warning"
+      <el-button v-if="hasPermission('quartz:sysQuartzJob:update')"
+                 type="warning"
                  size="small"
                  icon="el-icon-edit-outline"
-                 @click="edit()"
+                 @click="update()"
                  :disabled="dataListSelections.length !== 1"
                  plain>修改</el-button>
-      <el-button type="danger"
+      <el-button v-if="hasPermission('quartz:sysQuartzJob:delete')"
+                 type="danger"
                  size="small"
                  icon="el-icon-delete"
-                 @click="del()"
+                 @click="del"
                  :disabled="dataListSelections.length <= 0"
                  plain>删除
       </el-button>
@@ -68,24 +74,44 @@
               border
               size="medium"
               @selection-change="selectionChangeHandle"
-              @sort-change="sortChangeHandle"
               class="table">
       <el-table-column type="selection"
                        header-align="center"
                        align="center"
                        width="50">
       </el-table-column>
-      <el-table-column prop="type"
-                       sortable="custom"
-                       label="类型">
+      <el-table-column prop="jobName"
+                       label="任务名称"
+                       show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column prop="jobGroup"
+                       label="任务组名"
+                       show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column prop="targetClass"
+                       label="调用目标类"
+                       width="300"
+                       show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column prop="cron"
+                       label="cron表达式"
+                       show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column prop="enabled"
+                       label="是否启用"
+                       show-overflow-tooltip>
         <template slot-scope="scope">
-          <el-link type="primary"
-                   :underline="false"
-                   @click="edit(scope.row.id)">{{scope.row.type}}</el-link>
+          <el-switch v-model="scope.row.enabled"
+                     active-color="#13ce66"
+                     inactive-color="#ff4949"
+                     active-value="0"
+                     inactive-value="1"
+                     @change="handleSwitch(scope.row)">
+          </el-switch>
         </template>
       </el-table-column>
       <el-table-column prop="remark"
-                       label="描述">
+                       label="备注">
       </el-table-column>
       <el-table-column fixed="right"
                        header-align="center"
@@ -93,26 +119,29 @@
                        width="250"
                        label="操作">
         <template slot-scope="scope">
-          <el-button type="text"
+          <el-button v-if="hasPermission('quartz:sysQuartzJob:update')"
+                     type="text"
                      size="small"
-                     @click="view(scope.row.id)">查看
+                     @click="execute(scope.row.id)"><i class="el-icon-video-play"></i>执行一次
           </el-button>
           <el-divider direction="vertical"></el-divider>
-          <el-button type="text"
+          <el-button v-if="hasPermission('quartz:sysQuartzJob:info')"
+                     type="text"
                      size="small"
-                     @click="edit(scope.row.id)">修改
+                     @click="info(scope.row.id)">查看
           </el-button>
           <el-divider direction="vertical"></el-divider>
-          <el-button type="text"
+          <el-button v-if="hasPermission('quartz:sysQuartzJob:update')"
+                     type="text"
+                     size="small"
+                     @click="update(scope.row.id)">修改
+          </el-button>
+          <el-divider direction="vertical"></el-divider>
+          <el-button v-if="hasPermission('quartz:sysQuartzJob:delete')"
+                     type="text"
                      size="small"
                      @click="del(scope.row.id)">
             删除
-          </el-button>
-          <el-divider direction="vertical"></el-divider>
-          <el-button type="text"
-                     size="small"
-                     @click="showRight(scope.row)">
-            管理键值
           </el-button>
         </template>
       </el-table-column>
@@ -127,30 +156,22 @@
                    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
-    <!-- 弹窗, 新增 / 修改 -->
-    <dict-type-form ref="dictTypeForm"
-                    @refreshDataList="refreshList"></dict-type-form>
-    <el-drawer size="700px"
-               :title="`数据字典值列表，所属类型: ${dictTypeTitle}`"
-               :visible.sync="rightVisible"
-               direction="rtl">
-      <dict-value-list :dict-type-title="dictTypeTitle"
-                       ref="dictValueList"
-                       @closeRight="closeRight"></dict-value-list>
-    </el-drawer>
+    <!-- 增、改、查 -->
+    <SysQuartzJobForm ref="sysQuartzJobForm"
+                      @refreshDataList="refreshList"></SysQuartzJobForm>
 
   </div>
 </template>
 
 <script>
-import DictTypeForm from './form'
-import DictValueList from '../value'
+import SysQuartzJobForm from './SysQuartzJobForm'
 
 export default {
   data () {
     return {
       searchForm: {
-        type: ''
+        jobName: '',
+        jobGroup: ''
       },
       dataList: [],
       current: 1,
@@ -159,14 +180,11 @@ export default {
       orderBy: '',
       dataListSelections: [],
       isSearchCollapse: false,
-      dictTypeTitle: '',
-      rightVisible: false,
       loading: false
     }
   },
   components: {
-    DictTypeForm,
-    DictValueList
+    SysQuartzJobForm
   },
   activated () { },
   mounted () {
@@ -176,12 +194,11 @@ export default {
     // 获取数据列表
     refreshList () {
       this.loading = true
-      this.$http.get('/sys/dict/type/page', {
+      this.$http.get('/quartz/sysQuartzJob/page', {
         params: {
           current: this.current,
           size: this.size,
-          type: this.searchForm.type,
-          orderBy: this.orderBy
+          ...this.$util.filterParams(this.searchForm)
         }
       }).then(({ data }) => {
         if (data && data.code === 200) {
@@ -206,31 +223,20 @@ export default {
     selectionChangeHandle (val) {
       this.dataListSelections = val
     },
-    // 排序
-    sortChangeHandle (obj) {
-      if (obj.order === 'ascending') {
-        this.orderBy = obj.prop + ' asc'
-      } else if (obj.order === 'descending') {
-        this.orderBy = obj.prop + ' desc'
-      } else {
-        this.orderBy = ''
-      }
-      this.refreshList()
-    },
     // 新增
     add () {
-      this.$refs.dictTypeForm.init('add', '')
+      this.$refs.sysQuartzJobForm.init('save', '')
     },
     // 修改
-    edit (id) {
+    update (id) {
       id = id || this.dataListSelections.map(item => {
         return item.id
       })[0]
-      this.$refs.dictTypeForm.init('edit', id)
+      this.$refs.sysQuartzJobForm.init('update', id)
     },
     // 查看
-    view (id) {
-      this.$refs.dictTypeForm.init('view', id)
+    info (id) {
+      this.$refs.sysQuartzJobForm.init('info', id)
     },
     // 删除
     del (id) {
@@ -242,7 +248,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$http.delete('/sys/dict/type/delete', { params: { ids } }).then(({ data }) => {
+        this.$http.delete('/quartz/sysQuartzJob/delete', { params: { ids } }).then(({ data }) => {
           if (data && data.code === 200) {
             this.$message.success(data.msg)
             this.refreshList()
@@ -254,15 +260,32 @@ export default {
       this.$refs.searchForm.resetFields()
       this.refreshList()
     },
-    showRight (row) {
-      this.rightVisible = true
-      this.$nextTick(() => {
-        this.$refs.dictValueList.refreshList(row.id)
-        this.dictTypeTitle = row.type
+    handleSwitch (row) {
+      this.loading = true
+      this.$http.put('/quartz/sysQuartzJob/update', { id: row.id, enabled: row.enabled }).then(({ data }) => {
+        if (data && data.code === 200) {
+          this.$message({
+            message: data.msg,
+            type: 'success',
+            duration: 1500
+          })
+        }
+        this.refreshList()
+        this.loading = false
       })
     },
-    closeRight () {
-      this.rightVisible = false
+    execute (id) {
+      this.loading = true
+      this.$http.get('/quartz/sysQuartzJob/once', { params: { id } }).then(({ data }) => {
+        if (data && data.code === 200) {
+          this.$message({
+            message: data.msg,
+            type: 'success',
+            duration: 1500
+          })
+        }
+        this.loading = false
+      })
     }
   }
 }

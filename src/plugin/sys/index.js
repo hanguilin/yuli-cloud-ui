@@ -42,6 +42,8 @@ export default {
     Vue.prototype.validator = validator
     // 权限判断
     Vue.prototype.hasPermission = util.permission.hasPermission
+    // 字典操作
+    Vue.prototype.$dict = util.dict
 
     // Element
     Vue.use(ElementUI)

@@ -4,7 +4,7 @@ import cloneDeep from 'lodash/cloneDeep'
 // 进度条
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { getMenu, getPermission } from '@/api/modules/sys/index'
+import { getMenu, getDict, getPermission } from '@/api/modules/sys/index'
 import store from '@/store'
 import util from '@/libs/util'
 // 路由数据
@@ -74,6 +74,12 @@ router.beforeEach(async (to, from, next) => {
     getPermission().then(({ data }) => {
       if (data && data.code === 200) {
         store.dispatch('sys/permission/set', data.data, { root: true })
+      }
+    })
+    // 设置字典到vuex
+    getDict().then(({ data }) => {
+      if (data && data.code === 200) {
+        store.dispatch('sys/dict/set', data.data, { root: true })
       }
     })
   }

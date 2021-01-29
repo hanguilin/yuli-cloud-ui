@@ -258,7 +258,7 @@
 </template>
 
 <script>
-import UserForm from './form'
+import UserForm from './UserForm'
 export default {
   data () {
     return {

@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import DictValueForm from './form'
+import DictValueForm from './DictValueForm'
 
 export default {
   data () {

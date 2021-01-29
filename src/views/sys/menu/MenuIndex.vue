@@ -156,7 +156,7 @@
 </template>
 
 <script>
-import MenuForm from './form'
+import MenuForm from './MenuForm'
 export default {
   data () {
     return {

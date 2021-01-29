@@ -21,7 +21,7 @@ const frameIn = {
         title: '首页',
         auth: true
       },
-      component: _import('sys/index/index')
+      component: _import('sys/index')
     },
     // 系统 前端日志
     {

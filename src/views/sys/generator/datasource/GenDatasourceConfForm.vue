@@ -47,6 +47,7 @@
           <el-form-item label="JdbcUrl"
                         prop="url">
             <el-input v-model="inputForm.url"
+                      type="textarea"
                       placeholder="数据源JdbcUrl"></el-input>
           </el-form-item>
         </el-col>
@@ -85,6 +86,10 @@ export default {
         remark: ''
       },
       dataRule: {
+        name: [{ required: true, message: '数据源名称不能为空', trigger: 'blur' }],
+        url: [{ required: true, message: 'JdbcUrl不能为空', trigger: 'blur' }],
+        username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+        password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
       }
     }
   },

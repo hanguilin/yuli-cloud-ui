@@ -1,5 +1,8 @@
 // 每个主题特有的设置
 .theme-#{$theme-name} {
+  .el-select {
+    width: 100%;
+  }
   // 表格间距
   .table {
     margin: 10px 0;

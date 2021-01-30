@@ -20,6 +20,10 @@ import validator from '@/libs/validator'
 import '@/directive'
 // 打字机效果
 import VueTypedJs from 'vue-typed-js'
+// echarts
+import echarts from 'echarts'
+// echarts水球图
+import 'echarts-liquidfill'
 
 export default {
   async install (Vue, options) {
@@ -44,6 +48,8 @@ export default {
     Vue.prototype.hasPermission = util.permission.hasPermission
     // 字典操作
     Vue.prototype.$dict = util.dict
+    // echarts
+    Vue.prototype.$echarts = echarts
 
     // Element
     Vue.use(ElementUI)

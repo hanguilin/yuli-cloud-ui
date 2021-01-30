@@ -13,9 +13,9 @@
         </div>
       </div>
       <div class="login-left-center">
-        <vue-typed-js :strings="['一款开源敏捷开发框架']"
+        <vue-typed-js :strings="['基于SpringCloud的快速开发平台']"
                       cursorChar="_"
-                      :typeSpeed="100">
+                      :typeSpeed="50">
           <h1 class="typing"></h1>
         </vue-typed-js>
         <!-- <h1>一款开源敏捷开发框架</h1> -->

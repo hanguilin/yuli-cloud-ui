@@ -12,12 +12,11 @@
               row-key="id"
               class="table"
               border
-              default-expand-all
               :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
       <el-table-column prop="name"
                        header-align="center"
                        show-overflow-tooltip
-                       align="center"
+                       align="left"
                        min-width="20%"
                        label="机构名称">
         <template slot-scope="scope">
@@ -26,10 +25,13 @@
                    @click="edit(scope.row.id)">{{scope.row.name}}</el-link>
         </template>
       </el-table-column>
-      <el-table-column min-width="15%"
+      <el-table-column min-width="10%"
                        prop="type"
                        align="center"
                        label="机构类型">
+        <template slot-scope="scope">
+          {{$dict.getDictLabel('sys_office_type', scope.row.type, '-')}}
+        </template>
       </el-table-column>
       <el-table-column prop="sort"
                        header-align="center"
@@ -70,7 +72,7 @@
       <el-table-column fixed="right"
                        header-align="center"
                        align="center"
-                       min-width="20%"
+                       min-width="25%"
                        label="操作">
         <template slot-scope="scope">
           <el-button type="text"

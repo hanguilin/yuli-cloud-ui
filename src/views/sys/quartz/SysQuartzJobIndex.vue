@@ -122,7 +122,8 @@
           <el-button v-if="hasPermission('quartz:sysQuartzJob:update')"
                      type="text"
                      size="small"
-                     @click="execute(scope.row.id)"><i class="el-icon-video-play"></i>执行一次
+                     icon="el-icon-video-play"
+                     @click="execute(scope.row.id)">执行一次
           </el-button>
           <el-divider direction="vertical"></el-divider>
           <el-button v-if="hasPermission('quartz:sysQuartzJob:info')"

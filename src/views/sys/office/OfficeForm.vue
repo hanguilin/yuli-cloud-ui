@@ -43,7 +43,7 @@
             <el-select v-model="inputForm.type"
                        placeholder="请选择"
                        style="width: 100%;">
-              <el-option v-for="item in [{id: '1', label: '公司', value: '0'}, {id: '2', label: '部门', value: '1'}, {id: '3', label: '团队', value: '2'}, {id: '4', label: '其他', value: '3'}]"
+              <el-option v-for="item in $dict.getDictValueList('sys_office_type')"
                          :key="item.value"
                          :label="item.label"
                          :value="item.value">
@@ -57,7 +57,7 @@
             <el-select v-model="inputForm.enabled"
                        placeholder="请选择"
                        style="width: 100%;">
-              <el-option v-for="item in [{id: '1', label: '是', value: '0'}, {id: '2', label: '否', value: '1'}]"
+              <el-option v-for="item in $dict.getDictValueList('sys_flag')"
                          :key="item.value"
                          :label="item.label"
                          :value="item.value">

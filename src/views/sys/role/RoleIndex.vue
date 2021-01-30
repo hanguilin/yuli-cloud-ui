@@ -97,7 +97,7 @@
       </el-table-column>
       <el-table-column show-overflow-tooltip
                        prop="enabled"
-                       min-width="20%"
+                       min-width="10%"
                        label="是否可用">
         <template slot-scope="scope">
           <el-tag type="success"
@@ -114,7 +114,7 @@
       <el-table-column fixed="right"
                        header-align="center"
                        align="center"
-                       min-width="20%"
+                       min-width="30%"
                        label="操作">
         <template slot-scope="scope">
           <el-button icon="el-icon-edit"

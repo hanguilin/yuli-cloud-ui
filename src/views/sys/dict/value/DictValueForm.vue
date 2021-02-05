@@ -73,11 +73,12 @@ export default {
       } else if (method === 'view') {
         this.title = '查看字典值'
       }
-      this.inputForm.id = obj.dictValueId
-      this.inputForm.typeId = obj.dictTypeId
       this.visible = true
       this.$nextTick(() => {
         this.$refs.inputForm.resetFields()
+        this.inputForm.id = obj.dictValueId
+        this.inputForm.typeId = obj.dictTypeId
+        this.inputForm.sort = obj.currentMaxSort ? obj.currentMaxSort + 1 : 1
         if (method === 'edit' || method === 'view') { // 修改或者查看
           this.$http({
             url: `/sys/dict/value/info/${this.inputForm.id}`,

@@ -55,7 +55,7 @@ axios.interceptors.response.use(response => {
   if (loading) {
     loading.close()
   }
-  if (notAutoTips.indexOf(response.config.url) === -1 && response.data && response.data.code !== 200) {
+  if (notAutoTips.indexOf(response.config.url) === -1 && response.data && response.data.code && response.data.code !== 200) {
     Message({
       message: response.data.msg,
       type: 'error',

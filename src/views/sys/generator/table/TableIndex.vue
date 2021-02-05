@@ -85,13 +85,13 @@
           <el-button v-if="hasPermission('generator:genDatasourceConf:update')"
                      type="text"
                      size="small"
-                     @click="createMenu(scope.row.id)">创建菜单
+                     @click="openCreateMenuForm(scope.row.tableName)">创建菜单
           </el-button>
           <el-divider direction="vertical"></el-divider>
           <el-button v-if="hasPermission('generator:genDatasourceConf:update')"
                      type="text"
                      size="small"
-                     @click="fieldInfo(scope.row.id)">字段详情
+                     @click="openfieldForm(scope.row.tableName)">字段详情
           </el-button>
         </template>
       </el-table-column>
@@ -112,13 +112,18 @@
     <!-- 代码生成表单 -->
     <GenCodeForm ref="genCodeForm"
                  @refreshDataList="refreshList"></GenCodeForm>
-
+    <!-- 字段表单 -->
+    <FieldForm ref="fieldForm" />
+    <!-- 创建菜单表单 -->
+    <CreateMenuForm ref="createMenuForm" />
   </div>
 </template>
 
 <script>
 import TableForm from './TableForm'
 import GenCodeForm from './GenCodeForm'
+import FieldForm from './FieldForm'
+import CreateMenuForm from './CreateMenuForm'
 
 export default {
   data () {
@@ -139,7 +144,9 @@ export default {
   },
   components: {
     TableForm,
-    GenCodeForm
+    GenCodeForm,
+    FieldForm,
+    CreateMenuForm
   },
   activated () { },
   mounted () {
@@ -227,6 +234,20 @@ export default {
     resetSearch () {
       this.$refs.searchForm.resetFields()
       this.refreshList()
+    },
+    openfieldForm (tableName) {
+      this.$refs.fieldForm.init(tableName, this.searchForm.dsName)
+    },
+    openCreateMenuForm (tableName) {
+      this.$http.get('/codegen/gen/recently', { params: { tableName } }).then(({ data }) => {
+        if (data && data.code === 200) {
+          if (!data.data || data.data.length < 1) {
+            this.$message.error('请先生成代码')
+          } else {
+            this.$refs.createMenuForm.init(tableName)
+          }
+        }
+      })
     }
   }
 }

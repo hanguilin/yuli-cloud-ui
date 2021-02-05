@@ -48,7 +48,7 @@
                      placeholder="如果是路由路径请留空白，http链接或者外部链接请选择iframe"
                      clearable
                      style="width: 100%;">
-            <el-option v-for="item in [{label: '系统页面', value: '0'}, {label: '外链', value: '1'}]"
+            <el-option v-for="item in $dict.getDictValueList('sys_menu_target')"
                        :key="item.value"
                        :label="item.label"
                        :value="item.value">
@@ -81,7 +81,7 @@
                       label="可见"
                       prop="visible">
           <el-radio-group v-model="inputForm.visible">
-            <el-radio v-for="item in [{ id: '1', label: '显示', value: '0' }, { id: '2', label: '隐藏', value: '1' }]"
+            <el-radio v-for="item in $dict.getDictValueList('sys_visible')"
                       :label="item.value"
                       :key="item.id">{{item.label}}</el-radio>
           </el-radio-group>

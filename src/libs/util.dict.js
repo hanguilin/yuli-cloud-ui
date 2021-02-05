@@ -51,17 +51,17 @@ function getValueList (type, defaultValue) {
   // 获取字典列表
   const dictList = store.getters['sys/dict/get']
   // 如果字典列表无数据，则返回默认值
-  if (!dictList || dictList.lenth < 1) {
+  if (!dictList || dictList.length < 1) {
     return defaultValue
   }
   // 如果字典列表中类型无数据，则返回默认值
   var typeList = dictList.filter(e => e.type.indexOf(type) !== -1)
-  if (!typeList || typeList.lenth < 1) {
+  if (!typeList || typeList.length < 1) {
     return defaultValue
   }
   // 如果类型中无键值数据，则返回默认值
   var dictValueList = typeList[0].dictValueList
-  if (!dictValueList || dictValueList.lenth < 1) {
+  if (!dictValueList || dictValueList.length < 1) {
     return defaultValue
   }
   return dictValueList

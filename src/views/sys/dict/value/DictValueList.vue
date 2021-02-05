@@ -122,8 +122,11 @@ export default {
     // 新增
     add () {
       this.dictVisible = true
+      let last = this.dataList[this.dataList.length - 1]
+      console.log(last)
+      let currentMaxSort = last ? last.sort : 0
       this.$nextTick(() => {
-        this.$refs.dictValueForm.init('add', { dictValueId: '', dictTypeId: this.dictTypeId })
+        this.$refs.dictValueForm.init('add', { dictValueId: '', dictTypeId: this.dictTypeId, currentMaxSort })
       })
     },
     // 修改

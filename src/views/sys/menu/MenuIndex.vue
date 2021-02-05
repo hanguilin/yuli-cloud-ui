@@ -41,17 +41,8 @@
                        min-width="8%"
                        label="类型">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.type === '0'"
-                  size="small">目录</el-tag>
-          <el-tag v-else-if="scope.row.type === '1'"
-                  size="small"
-                  type="success">菜单</el-tag>
-          <el-tag v-else-if="scope.row.type === '2'"
-                  size="small"
-                  type="info">按钮</el-tag>
-          <el-tag v-else-if="scope.row.type === '3'"
-                  size="small"
-                  type="info">路由</el-tag>
+          <el-tag :type="getMenuType(scope.row.type)"
+                  size="small">{{$dict.getDictLabel('sys_menu_type', scope.row.type, '--')}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="sort"
@@ -95,7 +86,7 @@
       </el-table-column>
       <el-table-column prop="url"
                        header-align="center"
-                       align="center"
+                       align="left"
                        min-width="10%"
                        :show-overflow-tooltip="true"
                        label="外链路径">
@@ -266,6 +257,17 @@ export default {
     },
     closeRight () {
       this.rightVisible = false
+    },
+    getMenuType (type) {
+      let label = this.$dict.getDictLabel('sys_menu_type', type, '--')
+      switch (label) {
+        case '菜单':
+          return 'success'
+        case '按钮':
+          return 'info'
+        default:
+          return 'primary'
+      }
     }
   }
 }

@@ -85,14 +85,20 @@
           class="dialog-footer">
       <el-button @click="visible = false">关闭</el-button>
       <el-button v-if="method != 'info'"
+                 type="success"
+                 @click="doPreview()"
+                 v-noMoreClick>预览</el-button>
+      <el-button v-if="method != 'info'"
                  type="primary"
                  @click="doSubmit()"
                  v-noMoreClick>确定</el-button>
     </span>
+    <PreviewForm ref="previewForm" />
   </el-dialog>
 </template>
 
 <script>
+import PreviewForm from './PreviewForm'
 export default {
   data () {
     return {
@@ -118,6 +124,9 @@ export default {
         moduleName: [{ required: true, message: '模块名不能为空', trigger: 'blur' }]
       }
     }
+  },
+  components: {
+    PreviewForm
   },
   methods: {
     init (tableName, dsName) {
@@ -148,6 +157,19 @@ export default {
               this.$util.download(res)
               this.visible = false
               this.$emit('refreshDataList')
+            }
+            this.loading = false
+          })
+        }
+      })
+    },
+    doPreview () {
+      this.$refs.inputForm.validate((valid) => {
+        if (valid) {
+          this.loading = true
+          this.$http.post('/codegen/gen/preview', { ...this.inputForm, dsName: this.dsName }).then(({ data }) => {
+            if (data.code === 200) {
+              this.$refs.previewForm.init(data.data)
             }
             this.loading = false
           })
